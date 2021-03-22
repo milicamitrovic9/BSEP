@@ -30,14 +30,14 @@ public class Admin {
     private String password;
 
     @Column(name = "RootCreated", nullable = false)
-    private boolean rootCreated=false;
+    private boolean rootCreated = false;
 
-    public Admin(String name, String lastName, String email, String password) {
+    public Admin(String name, String lastName, String email, String password, boolean rootCreated) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.rootCreated=false;
+        this.rootCreated = rootCreated;
 
     }
 
