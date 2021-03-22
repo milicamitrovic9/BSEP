@@ -1,5 +1,7 @@
 package com.ftn.bsep.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,9 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Admin {
+public class Admin implements Serializable {
 
-    public Admin() {
+	private static final long serialVersionUID = 5183330603537586370L;
+
+	public Admin() {
     	
     }
 
@@ -30,14 +34,14 @@ public class Admin {
     private String password;
 
     @Column(name = "RootCreated", nullable = false)
-    private boolean rootCreated=false;
+    private boolean rootCreated = false;
 
-    public Admin(String name, String lastName, String email, String password) {
+    public Admin(String name, String lastName, String email, String password, boolean rootCreated) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.rootCreated=false;
+        this.rootCreated = rootCreated;
 
     }
 
