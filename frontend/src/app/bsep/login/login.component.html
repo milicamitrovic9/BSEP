@@ -1,0 +1,29 @@
+<div class='card'>
+    <div class='card-body'>
+    <h1>Log in</h1>
+    <form (ngSubmit)="login()" #pacijentForm="ngForm">
+        <table>
+            <tr>
+                    <td>Email</td>
+                    <td><input type="text" required name="email" #email="ngModel" [(ngModel)]="zahtev.email" [ngClass]="{'form-control':true,
+                        'is-invalid': !email?.email && !email?.touched,
+                        'is-valid': email?.valid && email?.touched}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"></td>
+                    
+                    <td *ngIf="email?.errors?.required && email?.touched"> Requierd field</td>
+                    <td *ngIf="email?.errors?.pattern && email?.touched"> E-mail not valid</td>
+                </tr>
+                <tr>
+                        <td>Password</td>
+                        <td><input type="password" required name="password" #password="ngModel" [(ngModel)]="zahtev.password" [ngClass]="{'form-control':true,
+                            'is-invalid': !password?.valid && !password?.touched,
+                            'is-valid': password?.valid && password?.touched}"></td>
+                        <td *ngIf="password?.errors?.required && password?.touched"> Requierd field</td>
+                    </tr>
+                   
+                            <tr>
+                            <td><input class="btn btn-info" type="submit" value="Submit"></td>
+                                </tr>
+        </table>
+    </form>
+    </div>
+</div>
