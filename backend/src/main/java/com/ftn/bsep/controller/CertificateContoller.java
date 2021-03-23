@@ -19,15 +19,24 @@ import com.ftn.bsep.service.CertificateService;
 public class CertificateContoller {
 
 	Logger logger = LoggerFactory.getLogger(CertificateContoller.class);
-	
+
 	@Autowired
 	private CertificateService certificateService;
 
 	@PostMapping(value = "/createRoot")
 	public ResponseEntity<?> createRootCertificate(@RequestBody CertificateDAO certificate) throws Exception {
 
-		Certificate createdCertificate = certificateService.createRoot(certificate);
+		Certificate rootCertificate = certificateService.createRoot(certificate);
 
-		return new ResponseEntity<>(createdCertificate, HttpStatus.CREATED);
+		return new ResponseEntity<>(rootCertificate, HttpStatus.CREATED);
 	}
+
+	@PostMapping(value = "/create")
+	public ResponseEntity<?> createCertificate(@RequestBody CertificateDAO certificate) throws Exception {
+
+		boolean created = certificateService.createCA(certificate);
+
+		return new ResponseEntity<>(created, HttpStatus.CREATED);
+	}
+
 }
