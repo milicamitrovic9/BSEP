@@ -1,7 +1,6 @@
 package com.ftn.bsep.service;
 
 import java.util.Collection;
-
 import com.ftn.bsep.model.Admin;
 
 public interface AdminService {
