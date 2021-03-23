@@ -47,10 +47,10 @@
             </tr>
             <tr>
                 <td>Last name</td>
-                <td><input type="text" required name="lastname" #prezime="ngModel"  [(ngModel)]="korisnik.lastname" [ngClass]="{'form-control':true,
-                    'is-invalid': !lastname?.valid && !lastname?.touched,
-                    'is-valid': lastname?.valid && lastname?.touched}" ></td>
-                    <td *ngIf="lastname?.errors?.required && lastname?.touched"> Requierd field
+                <td><input type="text" required name="lastName" #prezime="ngModel"  [(ngModel)]="korisnik.lastName" [ngClass]="{'form-control':true,
+                    'is-invalid': !lastName?.valid && !lastName?.touched,
+                    'is-valid': lastName?.valid && lastName?.touched}" ></td>
+                    <td *ngIf="lastName?.errors?.required && lastName?.touched"> Requierd field
                     </td>
             </tr>
             <tr>
