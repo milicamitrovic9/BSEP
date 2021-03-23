@@ -1,7 +1,6 @@
 package com.ftn.bsep.service;
 
 import java.math.BigInteger;
-import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
@@ -34,10 +33,9 @@ public class CertificateGenerator {
 		try {
 
 			/**
-			 * Klasa za generisanje ne moze da primi direktno private key zato imamo builder
-			 * sa enkripcijom Sadrzi private key Issuer-a sertifikta i koristi se za
-			 * potpisivanje sertifikata Parametar je algoritam koji se koristi za
-			 * potpisavanje sertifikata
+			 * Klasa za generisanje ne moze da primi direktno private key zato imamo builder sa enkripcijom 
+			 * Sadrzi private key Issuer-a sertifikta i koristi se za potpisivanje sertifikata 
+			 * Parametar je algoritam koji se koristi za potpisavanje sertifikata
 			 */
 			JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
 			/**
