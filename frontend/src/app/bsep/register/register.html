@@ -1,23 +1,56 @@
-<div class='card'>
-    <div class='card-body'>
+
+<div class="wrapper" style="background-image: url(./assets/img/pki.png); margin-top: -2px; ">
+    <div>
+        <div class="sidebar" data-color="danger" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
+            <div class="sidebar-background" style="background-image: url(./assets/img/pki.png)"></div>
+            <div class="logo">
+                <a   class="simple-text">
+                    <div class="logo-img">
+                        <img src="/assets/img/pki.png" />
+                    </div>
+                    Certifications
+                </a>
+            </div>
+            <div class="sidebar-wrapper">
+                <ul class="nav">
+                    <li  ng-click="func()" routerLinkActive="active" class="nav-item">
+                        <a  ng-click="func()"  class="nav-link sidebar-1" [routerLink]="['/register']" > <i class="material-icons">person_add</i>
+                            <p style="color: green; font-weight: 500;">Register</p>
+                        </a>
+                    </li>
+                    <li routerLinkActive="active" class="nav-item">
+                        <a class="nav-link sidebar-1" [routerLink]="['/login']"> <i
+                                class="material-icons">person_pin</i>
+                            <p style="color: green; font-weight: 500;">Log in</p>
+                        </a>
+                    </li>
+                  
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div style="margin-left:300px; margin-top:50px; padding:10px; background-color: rgb(255, 255, 255)">
+       
     <h1>Register</h1>
     <form (ngSubmit)="onSubmit()" #pacijentForm="ngForm">
         <table>
             <tr>
                 <td>Name</td>
-                <td><input type="text" required name="ime" #ime="ngModel"  [(ngModel)]="korisnik.name" [ngClass]="{'form-control':true,
-                    'is-invalid': !ime?.valid && !ime?.touched,
-                    'is-valid': ime?.valid && ime?.touched}" ></td>
-                    <td *ngIf="ime?.errors?.required && ime?.touched"> Requierd field
+                <td><input type="text" required name="name" #ime="ngModel"  [(ngModel)]="korisnik.name" [ngClass]="{'form-control':true,
+                    'is-invalid': !ime?.valid && !name?.touched,
+                    'is-valid': name?.valid && name?.touched}" ></td>
+                    <td *ngIf="name?.errors?.required && name?.touched"> Requierd field
                     </td>
                
             </tr>
             <tr>
                 <td>Last name</td>
-                <td><input type="text" required name="prezime" #prezime="ngModel"  [(ngModel)]="korisnik.lastname" [ngClass]="{'form-control':true,
-                    'is-invalid': !prezime?.valid && !prezime?.touched,
-                    'is-valid': prezime?.valid && prezime?.touched}" ></td>
-                    <td *ngIf="prezime?.errors?.required && prezime?.touched"> Requierd field
+                <td><input type="text" required name="lastname" #prezime="ngModel"  [(ngModel)]="korisnik.lastname" [ngClass]="{'form-control':true,
+                    'is-invalid': !lastname?.valid && !lastname?.touched,
+                    'is-valid': lastname?.valid && lastname?.touched}" ></td>
+                    <td *ngIf="lastname?.errors?.required && lastname?.touched"> Requierd field
                     </td>
             </tr>
             <tr>
@@ -39,9 +72,10 @@
                     </tr>
                    
                             <tr>
-                            <td><input class="btn btn-info" type="submit" value="Submit"></td>
+                            <td><input class="btn waves-effect waves-light pink accent-2" type="submit" value="Register"></td>
                                 </tr>
         </table>
     </form>
-    </div>
+    
+</div>
 </div>

@@ -6,7 +6,7 @@ import { User } from '../shared/model/User';
 import { RegisterServices } from '../shared/service/registerService';
 
 @Component({
-  selector: 'login',
+  //selector: 'login',
   templateUrl: './login.component.html'
 })
 
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit{
 
   login(){
       
-      this.loginService.logIn(this.user).subscribe(result=>this.vratiKorisnika());
+      this.loginService.login(this.request).subscribe(result=>this.vratiKorisnika());
      
     
   }
@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit{
      this.loginService.whoIsLoggedIn().subscribe({next: korisnik=>{
           this.user=korisnik;
           alert("User "+korisnik.name + " logged in successfully.");
-          this.router.navigate(["/homepage"]);
+          this.router.navigate(["/userpage"]);
           
      }
      });

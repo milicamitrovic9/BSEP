@@ -21,12 +21,12 @@ export class RegisterComponent{
       
     
         this.registrcijaService.save(this.korisnik).subscribe(result => this.gotoUserList());
-        alert("sacuvan korisnik "+this.korisnik.name+""+this.korisnik.lastname)
+        alert("User: "+this.korisnik.name+""+this.korisnik.lastname+" has been registered")
         this.korisnik.name="";
         this.korisnik.lastname="";
         this.korisnik.email="";
         this.korisnik.password="";
-        this.router.navigate(["/login"]);
+        this.router.navigate(["/homepage"]);
 
       }
      

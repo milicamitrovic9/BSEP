@@ -1,6 +1,8 @@
   
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from '../shared/model/User';
+import { RegisterServices } from '../shared/service/registerService';
 
 @Component({
   selector: 'homepage',
@@ -8,16 +10,28 @@ import { Router } from '@angular/router';
 })
 
 export class HomePageComponent implements OnInit {
-   
-  constructor(private _router: Router) { }
-   
-    ngOnInit(): void {
-        throw new Error('Method not implemented.');
-    }
+  korisnik: User;
+   constructor(private router: Router, private registracijaService: RegisterServices) {
+    this.korisnik = new User();
 
-    func(){
-      alert('clicked me');
-      console.log("click");
-  
-    }
+
+  }
+
+  ngOnInit(): void {
+    this.vratiKorisnika();
+  }
+
+
+  vratiKorisnika() {
+
+    this.registracijaService.whoIsLoggedIn().subscribe({
+      next: korisnik => {
+        this.korisnik = korisnik;
+
+        if (this.korisnik != null) {
+          this.router.navigate(["/homepage"]);
+        }
+      }
+    });
+  }
 }

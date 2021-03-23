@@ -16,15 +16,15 @@ export class RegisterServices{
  
 
     public save(user:User){
-        return this.http.post<User>("/api/admin/addAdmin",user);
+        return this.http.post<User>("/api/admin/add",user);
     }
 
-    public logIn(loginReq:Login){
-        return this.http.post<Response>("/api/login", loginReq);
+    public login(loginReq:Login){
+        return this.http.post<Response>("/api/auth/login", loginReq);
     }
  
     public whoIsLoggedIn():Observable<User>{
-        return this.http.get<User>("/api/login/getLoggedUser");
+        return this.http.get<User>("/api/auth/loggedUser");
         
     }
 
