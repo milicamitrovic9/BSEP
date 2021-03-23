@@ -1,11 +1,43 @@
-<div class='card'>
-    <div class='card-body'>
+<div class="wrapper" style="background-image: url(./assets/img/pki.png); margin-top: -2px; ">
+    <div>
+        <div class="sidebar" data-color="danger" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
+            <div class="sidebar-background" style="background-image: url(./assets/img/pki.png)"></div>
+            <div class="logo">
+                <a  class="simple-text">
+                    <div class="logo-img">
+                        <img src="/assets/img/pki.png" />
+                    </div>
+                    Certifications
+                </a>
+            </div>
+            <div class="sidebar-wrapper">
+                <ul class="nav">
+                    <li  ng-click="func()" routerLinkActive="active" class="nav-item">
+                        <a  ng-click="func()"  class="nav-link sidebar-1" [routerLink]="['/register']" > <i class="material-icons">person_add</i>
+                            <p style="color: green; font-weight: 500;">Register</p>
+                        </a>
+                    </li>
+                    <li routerLinkActive="active" class="nav-item">
+                        <a class="nav-link sidebar-1" [routerLink]="['/login']"> <i
+                                class="material-icons">person_pin</i>
+                            <p style="color: green; font-weight: 500;">Log in</p>
+                        </a>
+                    </li>
+                  
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div style="margin-left:300px; margin-top:50px; padding:10px; background-color: rgb(255, 255, 255)">
     <h1>Log in</h1>
     <form (ngSubmit)="login()" #pacijentForm="ngForm">
         <table>
             <tr>
                     <td>Email</td>
-                    <td><input type="text" required name="email" #email="ngModel" [(ngModel)]="zahtev.email" [ngClass]="{'form-control':true,
+                    <td><input type="text" required name="email" #email="ngModel" [(ngModel)]="request.email" [ngClass]="{'form-control':true,
                         'is-invalid': !email?.email && !email?.touched,
                         'is-valid': email?.valid && email?.touched}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"></td>
                     
@@ -14,16 +46,17 @@
                 </tr>
                 <tr>
                         <td>Password</td>
-                        <td><input type="password" required name="password" #password="ngModel" [(ngModel)]="zahtev.password" [ngClass]="{'form-control':true,
+                        <td><input type="password" required name="password" #password="ngModel" [(ngModel)]="request.password" [ngClass]="{'form-control':true,
                             'is-invalid': !password?.valid && !password?.touched,
                             'is-valid': password?.valid && password?.touched}"></td>
                         <td *ngIf="password?.errors?.required && password?.touched"> Requierd field</td>
                     </tr>
                    
                             <tr>
-                            <td><input class="btn btn-info" type="submit" value="Submit"></td>
+                            <td><input class="btn waves-effect waves-light pink accent-2" type="submit" value="Submit"></td>
                                 </tr>
         </table>
     </form>
-    </div>
+   
+</div>
 </div>

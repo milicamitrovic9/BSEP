@@ -4,26 +4,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
-
-import { AppRoutingModule } from './app.routing';
-import { ComponentsModule } from './components/components.module';
-
 import { AppComponent } from './app.component';
-
-import { DashboardComponent } from './dashboard/dashboard.component';
-
-import { TableListComponent } from './table-list/table-list.component';
-import { TypographyComponent } from './typography/typography.component';
-import { IconsComponent } from './icons/icons.component';
-import { MapsComponent } from './maps/maps.component';
-import { NotificationsComponent } from './notifications/notifications.component';
-import { UpgradeComponent } from './upgrade/upgrade.component';
 import {
   AgmCoreModule
 } from '@agm/core';
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { HomePageComponent } from './ISA/homepage/homepage.component';
-import { LoginComponent } from './ISA/homepage/login/login.component';
+import { RegisterComponent } from './bsep/register/register.component';
+import { LoginComponent } from './bsep/login/login.component';
+import { HomePageComponent } from './bsep/homepage/homepage.component';
+import { RegisterServices } from './bsep/shared/service/registerService';
+import { UserPageComponent } from './bsep/userpage/userpage.component';
+import { User } from './bsep/shared/model/User';
+
+
 
 @NgModule({
   imports: [
@@ -31,29 +23,34 @@ import { LoginComponent } from './ISA/homepage/login/login.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    ComponentsModule,
     RouterModule,
-    AppRoutingModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
-    }),
+    //AppRoutingModule,
+  
     RouterModule.forRoot([
-      { path: '', redirectTo: 'homepage', pathMatch: 'full',}, 
-      { path: '**', redirectTo: 'homepage', pathMatch: 'full'},
       { path: 'homepage', component: HomePageComponent },
+      { path: 'register', component: RegisterComponent },
       { path: 'login', component: LoginComponent },
-
+      { path: 'userpage', component: UserPageComponent },
+      //{ path: 'homePage', component: HomePageComponent },
+      //{ path: 'sertifikat', component:SertifikatComponent },
+      //{ path: 'listaSertifikata', component:ListaSertifikataComponent },
+      { path: '', redirectTo: 'homepage', pathMatch: 'full' },
+      { path: '**', redirectTo: 'homepage', pathMatch: 'full'}
     ]),
-    
+    FormsModule
+   
   ],
   declarations: [
     AppComponent,
-    AdminLayoutComponent,
+    RegisterComponent,
+    LoginComponent,
     HomePageComponent,
-    LoginComponent
-
+    UserPageComponent
+       
   ],
-  providers: [],
+
+  providers: [RegisterServices],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }
