@@ -12,6 +12,7 @@ import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
@@ -37,11 +38,7 @@ public class CertificateGenerator {
 			 * Sadrzi private key Issuer-a sertifikta i koristi se za potpisivanje sertifikata 
 			 * Parametar je algoritam koji se koristi za potpisavanje sertifikata
 			 */
-			JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
-			/**
-			 * Provider se koristi, u ovom slucaju Bouncy Castle
-			 */
-			builder = builder.setProvider("BC");
+			JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithRSAEncryption").setProvider(BouncyCastleProvider.PROVIDER_NAME);
 
 			/**
 			 * Kreiramo objekat koji sadrzi private key koji sluzi za potpisavanje
