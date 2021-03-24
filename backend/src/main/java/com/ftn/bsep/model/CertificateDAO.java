@@ -1,30 +1,46 @@
 package com.ftn.bsep.model;
 
+import java.security.cert.X509Certificate;
+import java.util.Date;
+
+
+import org.bouncycastle.asn1.x500.AttributeTypeAndValue;
+import org.bouncycastle.asn1.x500.RDN;
+import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
+
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.X509Certificate;
 import java.util.Date;
 
 public class CertificateDAO {
 
-	private String cn;
-	private String o;
-	private String ou;
-	private String c;
-	private String mail;
-	private String surname;
-	private String givenname;
-	private String uid;
+	public CertificateDAO() {
+	}
+
+	private  String cn;
+	private  String o;
+	private  String ou;
+	private  String l;
+	private  String c;
+	private  String mail;
+	private  String surname;
+	private  String givenname;
+	private  String uid;
+
+
 
 	private String issuer;
-	private Date notBefore;
+	private  Date notBefore;
 	private Date notAfter;
-	private String extension;
+	private String extensionString;
 
-	
-	public CertificateDAO(String cn, String o, String ou, String c, String mail, String surname, String givenname,
-			String uid, String issuer, Date notBefore, Date notAfter, String extension) {
-		super();
+	public CertificateDAO(String cn, String o, String ou, String l, String c, String mail, String surname, String givenname, String uid, String issuer, Date notBefore, Date notAfter, String extensionString) {
 		this.cn = cn;
 		this.o = o;
 		this.ou = ou;
+		this.l = l;
 		this.c = c;
 		this.mail = mail;
 		this.surname = surname;
@@ -33,8 +49,43 @@ public class CertificateDAO {
 		this.issuer = issuer;
 		this.notBefore = notBefore;
 		this.notAfter = notAfter;
-		this.extension = extension;
+		this.extensionString = extensionString;
 	}
+
+	public CertificateDAO(X509Certificate certificate) throws CertificateEncodingException {
+		JcaX509CertificateHolder certificateHolder = new JcaX509CertificateHolder(certificate);
+
+		X500Name nameIssuer = new JcaX509CertificateHolder(certificate).getIssuer();
+		X500Name nameSubject = new JcaX509CertificateHolder(certificate).getSubject();
+		RDN[] rnds = nameSubject.getRDNs();
+		for (RDN rdn: rnds) {
+			AttributeTypeAndValue[] values = rdn.getTypesAndValues();
+			for (AttributeTypeAndValue val : values) {
+				if (val.getType().equals(BCStyle.CN)) {
+					cn = val.getValue().toString();
+				} else if (val.getType().equals(BCStyle.GIVENNAME)) {
+					givenname = val.getValue().toString();
+				} else if (val.getType().equals(BCStyle.SURNAME)) {
+					surname = val.getValue().toString();
+				} else if (val.getType().equals(BCStyle.O)) {
+					o = val.getValue().toString();
+				} else if (val.getType().equals(BCStyle.OU)) {
+					ou = val.getValue().toString();
+				} else if (val.getType().equals(BCStyle.C)) {
+					c = val.getValue().toString();
+				} else if (val.getType().equals(BCStyle.E)) {
+					mail = val.getValue().toString();
+				}
+				else if (val.getType().equals(BCStyle.UID)) {
+					uid = val.getValue().toString();
+				}
+			}
+		}
+
+		notBefore = certificate.getNotBefore();
+		notAfter=certificate.getNotAfter();
+	}
+
 
 	public String getCn() {
 		return cn;
@@ -52,12 +103,20 @@ public class CertificateDAO {
 		this.o = o;
 	}
 
-	public String getOu() {
+	public String getOU() {
 		return ou;
 	}
 
-	public void setOu(String ou) {
-		this.ou = ou;
+	public void setOU(String OU) {
+		this.ou = OU;
+	}
+
+	public String getL() {
+		return l;
+	}
+
+	public void setL(String l) {
+		this.l = l;
 	}
 
 	public String getC() {
@@ -68,36 +127,36 @@ public class CertificateDAO {
 		this.c = c;
 	}
 
-	public String getMail() {
+	public String getMAIL() {
 		return mail;
 	}
 
-	public void setMail(String mail) {
-		this.mail = mail;
+	public void setMAIL(String MAIL) {
+		this.mail = MAIL;
 	}
 
-	public String getSurname() {
+	public String getSURNAME() {
 		return surname;
 	}
 
-	public void setSurname(String surname) {
-		this.surname = surname;
+	public void setSURNAME(String SURNAME) {
+		this.surname = SURNAME;
 	}
 
-	public String getGivenname() {
+	public String getGIVENNAME() {
 		return givenname;
 	}
 
-	public void setGivenname(String givenname) {
-		this.givenname = givenname;
+	public void setGIVENNAME(String GIVENNAME) {
+		this.givenname = GIVENNAME;
 	}
 
-	public String getUid() {
+	public String getUID() {
 		return uid;
 	}
 
-	public void setUid(String uid) {
-		this.uid = uid;
+	public void setUID(String UID) {
+		this.uid = UID;
 	}
 
 	public String getIssuer() {
@@ -124,19 +183,30 @@ public class CertificateDAO {
 		this.notAfter = notAfter;
 	}
 
-	public String getExtension() {
-		return extension;
+	public String getExtensionString() {
+		return extensionString;
 	}
 
-	public void setExtension(String extension) {
-		this.extension = extension;
+	public void setExtensionString(String extensionString) {
+		this.extensionString = extensionString;
 	}
 
 	@Override
 	public String toString() {
-		return "Certificate [cn=" + cn + ", o=" + o + ", ou=" + ou + ", c=" + c + ", mail=" + mail + ", surname="
-				+ surname + ", givenname=" + givenname + ", uid=" + uid + ", issuer=" + issuer + ", notBefore="
-				+ notBefore + ", notAfter=" + notAfter + ", extension=" + extension + "]";
+		return "CertificateDAO{" +
+				"cn='" + cn + '\'' +
+				", O='" + o + '\'' +
+				", OU='" + ou + '\'' +
+				", L='" + l + '\'' +
+				", C='" + c + '\'' +
+				", MAIL='" + mail + '\'' +
+				", SURNAME='" + surname + '\'' +
+				", GIVENNAME='" + givenname + '\'' +
+				", UID='" + uid + '\'' +
+				", issuer='" + issuer + '\'' +
+				", notBefore=" + notBefore +
+				", notAfter=" + notAfter +
+				", extensionString='" + extensionString + '\'' +
+				'}';
 	}
-
 }
