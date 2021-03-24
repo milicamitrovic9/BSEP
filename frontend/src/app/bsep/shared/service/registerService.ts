@@ -29,7 +29,7 @@ export class RegisterServices{
     }
 
     public logout(request: Request) {
-        return this.http.post("/api/login/logout", request);
+        return this.http.post("/api/auth/logout", request);
     }
 
 
