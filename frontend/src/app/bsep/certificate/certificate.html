@@ -1,0 +1,134 @@
+<div class="wrapper" style="background-image: url(./assets/img/pki.png); margin-top: -2px; ">
+    <div>
+        <div class="sidebar" data-color="danger" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
+            <div class="sidebar-background" style="background-image: url(./assets/img/pki.png)"></div>
+            <div class="logo">
+                <a  class="simple-text">
+                    <div class="logo-img">
+                        <img src="/assets/img/pki.png" />
+                    </div>
+                    Certifications
+                </a>
+            </div>
+            <div class="sidebar-wrapper">
+                <ul class="nav">
+                   
+                    <li routerLinkActive="active" class="nav-item">
+                        <a (click)="logout()"  class="nav-link sidebar-1" [routerLink]="['/logout']"> <i
+                                class="material-icons">person_pin</i>
+                            <p style="color: green; font-weight: 500;">Log out</p>
+                        </a>
+                    </li>
+                  
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div style="margin-left:300px; margin-top:50px; padding:10px; background-color: rgb(255, 255, 255)">
+    <div class='card-body'>
+    <h1>New Certificate</h1>
+    <form (ngSubmit)="napraviNoviSertifikat()" #pacijentForm="ngForm">
+        <table>
+            <tr><h2>Details</h2></tr>
+            &nbsp;
+            &nbsp;
+            <tr>
+                
+                <td>Common name(CN)</td>
+                    <td><input type="text" name="CN" #CN="ngModel" [(ngModel)] = "sertifikat.cn"> </td>
+                </tr>
+                
+                &nbsp;
+                <tr>
+                <td>Organization(O)</td>
+                    <td><input type="text" name="O" #O="ngModel" [(ngModel)] = "sertifikat.o"> </td>
+                </tr>
+                &nbsp;
+                <tr>
+                <td>Organizational unit(OU)</td>
+                    <td><input type="text" name="OU" #OU="ngModel"[(ngModel)] = "sertifikat.ou"> </td>
+                </tr>
+                &nbsp;
+                <tr>
+                <td>Town(L)</td>
+                    <td><input type="text" name="L" #L="ngModel" [(ngModel)] = "sertifikat.l"> </td>
+                </tr>
+                &nbsp;
+                <tr>
+                <td>Country(C)</td>
+                    <td><input type="text" name="C" #C="ngModel" [(ngModel)] = "sertifikat.c"> </td>
+                </tr>
+                &nbsp;
+                <tr>
+                <td>Mail</td>
+                    <td><input type="text" name="MAIL" #MAIL="ngModel" [(ngModel)] = "sertifikat.mail"> </td>
+                </tr>
+                &nbsp;
+                <tr>
+                    <td>Surname</td>
+                        <td><input type="text" name="SURNAME" #SURNAME="ngModel" [(ngModel)] = "sertifikat.surname"> </td>
+                    </tr>
+                    &nbsp;
+                    <tr>
+                        <td>Givenname</td>
+                            <td><input type="text" name="GIVENNAME" #GIVENNAME="ngModel" [(ngModel)] = "sertifikat.givenname"> </td>
+                        </tr>
+                        &nbsp;
+                        <tr>
+                            <td>UID</td>
+                                <td><input type="number" name="UID" #UID="ngModel" [(ngModel)] = "sertifikat.uid"> </td>
+                            </tr>
+                            &nbsp;
+                <tr>
+                        <td>Issuer</td>
+                        <td>
+                           
+                            <select name="a"  #a="ngModel" [(ngModel)] = 'izabraniAlias'>
+                             <option *ngFor='let alias of imenaAliasa' [ngValue]="alias">{{alias}}</option> 
+                            </select>
+                        </td>
+                        
+                    </tr>
+                    &nbsp;
+                    <tr>
+                        <td>Purpose</td>
+                        <td>
+                            <select name="namena"  #namena="ngModel" [(ngModel)] = "sertifikat.extensionString">
+                            <!-- <option *ngFor='let tip of tipoviKlinike'>{{ tip.nazivTipa }}</option> -->
+                            <option >CA - Certificate Authority </option>
+                            <option >Document signing </option>
+                            <option >Data and key encipherment </option>
+                            </select>
+                        </td>
+                        &nbsp;
+                    </tr>
+                    &nbsp;
+                    <tr>
+                        <td>Not before</td>
+                        <td><input type="date" required name="password" #password="ngModel" [(ngModel)]="sertifikat.notBefore" [ngClass]="{'form-control':true,
+                            'is-invalid': !password?.valid && !password?.touched,
+                            'is-valid': password?.valid && password?.touched}"></td>
+                        <td *ngIf="password?.errors?.required && password?.touched">Requiered field</td>
+                    </tr>
+                    &nbsp;
+                    <tr>
+                        <td>Not after</td>
+                        <td><input type="date" required name="password" #password="ngModel" [(ngModel)]="sertifikat.notAfter" [ngClass]="{'form-control':true,
+                            'is-invalid': !password?.valid && !password?.touched,
+                            'is-valid': password?.valid && password?.touched}"></td>
+                        <td *ngIf="password?.errors?.required && password?.touched">Requiered field</td>
+                    </tr>
+                    &nbsp;
+                            <tr style="margin-bottom: 100px;">
+                            <td><input type="submit" class="btn waves-effect waves-light pink accent-2" value="Confirm"></td>
+                                </tr>
+                                <td style="margin-bottom: 100px;">
+                                    <button class="btn waves-effect waves-light pink accent-2" (click)='back()'> Back </button>
+                                </td>
+                                
+        </table>
+        <p *ngIf='!povratna'>Validity period must fall within the issuer's validity period.</p>
+    </form>
+    </div>
+</div>
+

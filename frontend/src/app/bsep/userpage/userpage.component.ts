@@ -4,6 +4,7 @@ import { User } from '../shared/model/User';
 import { RegisterServices } from '../shared/service/registerService';
 
 @Component({
+  
     templateUrl: './userpage.html',
    
   
@@ -30,9 +31,7 @@ import { RegisterServices } from '../shared/service/registerService';
         next: korisnik => {
           this.korisnik = korisnik;
   
-          if (this.korisnik == null) {
-            this.router.navigate(["/homepage"]);
-          }
+         
         }
       });
     }

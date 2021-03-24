@@ -28,9 +28,7 @@ export class HomePageComponent implements OnInit {
       next: korisnik => {
         this.korisnik = korisnik;
 
-        if (this.korisnik != null) {
-          this.router.navigate(["/homepage"]);
-        }
+        
       }
     });
   }

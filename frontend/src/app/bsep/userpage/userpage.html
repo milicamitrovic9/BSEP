@@ -13,12 +13,12 @@
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <li  ng-click="func()" routerLinkActive="active" class="nav-item">
-                        <a  ng-click="func()"  class="nav-link sidebar-1" [routerLink]="['/certificate']" > <i class="material-icons">person_add</i>
+                        <a  ng-click="func()"  class="nav-link sidebar-1" [routerLink]="['./certificate']" > <i class="material-icons">person_add</i>
                             <p style="color: green; font-weight: 500;">New certificate</p>
                         </a>
                     </li>
-                    <li  ng-click="func()" routerLinkActive="active" class="nav-item">
-                        <a  ng-click="func()"  class="nav-link sidebar-1" [routerLink]="['/allcertificates']" > <i class="material-icons">person_add</i>
+                    <li   routerLinkActive="active" class="nav-item">
+                        <a  ng-click="func()"  class="nav-link sidebar-1" [routerLink]="['./allCertificates']" > <i class="material-icons">person_add</i>
                             <p style="color: green; font-weight: 500;">All certificates</p>
                         </a>
                     </li>

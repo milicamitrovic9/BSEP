@@ -14,6 +14,7 @@ import { HomePageComponent } from './bsep/homepage/homepage.component';
 import { RegisterServices } from './bsep/shared/service/registerService';
 import { UserPageComponent } from './bsep/userpage/userpage.component';
 import { User } from './bsep/shared/model/User';
+import { UserPageModule } from './bsep/userpage/userpage.module';
 
 
 
@@ -24,16 +25,15 @@ import { User } from './bsep/shared/model/User';
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
+    UserPageModule,
     //AppRoutingModule,
   
     RouterModule.forRoot([
       { path: 'homepage', component: HomePageComponent },
       { path: 'register', component: RegisterComponent },
       { path: 'login', component: LoginComponent },
-      { path: 'userpage', component: UserPageComponent },
-      //{ path: 'homePage', component: HomePageComponent },
-      //{ path: 'sertifikat', component:SertifikatComponent },
-      //{ path: 'listaSertifikata', component:ListaSertifikataComponent },
+  //    { path: 'userpage', component: UserPageComponent },
+    
       { path: '', redirectTo: 'homepage', pathMatch: 'full' },
       { path: '**', redirectTo: 'homepage', pathMatch: 'full'}
     ]),
@@ -45,7 +45,7 @@ import { User } from './bsep/shared/model/User';
     RegisterComponent,
     LoginComponent,
     HomePageComponent,
-    UserPageComponent
+    //UserPageComponent
        
   ],
 
