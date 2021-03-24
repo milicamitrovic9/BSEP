@@ -1,6 +1,7 @@
 package com.ftn.bsep.service;
 
 import java.math.BigInteger;
+import java.security.Security;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
@@ -31,6 +32,9 @@ public class CertificateGenerator {
 	}
 
 	public X509Certificate generateCertificate(SubjectData subjectData, IssuerData issuerData, String extension) {
+
+		Security.addProvider(new BouncyCastleProvider());
+
 		try {
 
 			/**

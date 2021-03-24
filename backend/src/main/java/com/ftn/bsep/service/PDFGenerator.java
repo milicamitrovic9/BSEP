@@ -12,13 +12,14 @@ import com.itextpdf.text.pdf.PdfWriter;
 public class PDFGenerator {
 
 	public PDFGenerator() {
+		
 	}
 
 	public void createCertificatePDF(X509Certificate cert) throws DocumentException, FileNotFoundException {
 
 		String certName = cert.getSubjectDN().getName();
 		Document document = new Document();
-		PdfWriter.getInstance(document, new FileOutputStream("dataPDF/" + certName + ".pdf"));
+		PdfWriter.getInstance(document, new FileOutputStream("certificates/" + certName + ".pdf"));
 
 		document.open();
 		document.add(
