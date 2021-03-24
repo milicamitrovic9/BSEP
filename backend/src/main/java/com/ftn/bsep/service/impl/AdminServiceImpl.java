@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.UUID;
 
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
@@ -38,6 +39,8 @@ import com.itextpdf.text.DocumentException;
 @Service
 public class AdminServiceImpl implements AdminService {
 
+	private static final String KEY_STORE_FOLDER = "keyStore/";
+
 	@Autowired
 	private AdminRepository adminRepository;
 
@@ -48,8 +51,6 @@ public class AdminServiceImpl implements AdminService {
 	public Admin create(Admin admin) throws Exception {
 
 		Admin adminModel = new Admin();
-		adminModel.copyValues(admin);
-		adminModel = adminRepository.save(adminModel);
 
 		/**
 		 * Kreiranje novog para kljuceva za root
@@ -78,7 +79,7 @@ public class AdminServiceImpl implements AdminService {
 		/**
 		 * Sacuvaj CA sertifikat u fajl
 		 */
-		ksw.saveKeyStore("keyStoreCA.jks", pass);
+		ksw.saveKeyStore(KEY_STORE_FOLDER + "keyStoreCA.jks", pass);
 
 		/**
 		 * Kreiranje keyStore file za upis privatnog kljuca CA sertifikata
@@ -97,7 +98,7 @@ public class AdminServiceImpl implements AdminService {
 		/**
 		 * Cuvamo privremene kljuceve CA sertifikata u fajlu
 		 */
-		ksw1.saveKeyStore("keyStoreCAPrivatni.jks", pass);
+		ksw1.saveKeyStore(KEY_STORE_FOLDER + "keyStoreCAPrivatni.jks", pass);
 
 		/**
 		 * Kreiranje end-entity key store files
@@ -113,8 +114,11 @@ public class AdminServiceImpl implements AdminService {
 		 * Citanje i ispis kreiranog sertifikata na kozolu
 		 */
 		KeyStoreReader ksr = new KeyStoreReader();
-		Certificate certificate = ksr.readCertificate("keyStoreCA.jks", "123", "CARoot");
+		Certificate certificate = ksr.readCertificate(KEY_STORE_FOLDER + "keyStoreCA.jks", "123", "CARoot");
 		System.out.println(certificate);
+		
+		adminModel.copyValues(admin);
+		adminModel = adminRepository.save(adminModel);
 
 		return adminModel;
 	}
@@ -134,7 +138,7 @@ public class AdminServiceImpl implements AdminService {
 		/**
 		 * EE sertifikate cuvamo u ovom file-u
 		 */
-		ksw.saveKeyStore("keyStoreEE.jks", pass);
+		ksw.saveKeyStore(KEY_STORE_FOLDER + "keyStoreEE.jks", pass);
 
 		/**
 		 * Kreiranje keyStore file za upis privatnog kljuca EE sertifikata
@@ -149,7 +153,7 @@ public class AdminServiceImpl implements AdminService {
 		/**
 		 * Privremene kljuceve EE sertifikata cuvamo u ovom file-u
 		 */
-		ksw1.saveKeyStore("keyStoreEEPrivatni.jks", pass);
+		ksw1.saveKeyStore(KEY_STORE_FOLDER + "keyStoreEEPrivatni.jks", pass);
 
 	}
 
@@ -206,7 +210,7 @@ public class AdminServiceImpl implements AdminService {
 		/**
 		 *  UID (USER ID) je ID korisnika
 		 */
-		builder.addRDN(BCStyle.UID, "23");
+		builder.addRDN(BCStyle.UID, UUID.randomUUID().toString());
 
 		/** 
 		 * Kreiraju se podaci za issuer-a, sto u ovom slucaju ukljucuje:
@@ -244,7 +248,7 @@ public class AdminServiceImpl implements AdminService {
 			/**
 			 *  UID (USER ID) je ID korisnika
 			 */
-			builder.addRDN(BCStyle.UID, "23");
+			builder.addRDN(BCStyle.UID, UUID.randomUUID().toString());
 
 			/**
 			 *  Kreiraju se podaci za sertifikat, sto ukljucuje:
