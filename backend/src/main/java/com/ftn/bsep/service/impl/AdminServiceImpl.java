@@ -227,7 +227,7 @@ public class AdminServiceImpl implements AdminService {
 			 */
 			SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
 			Date startDate = iso8601Formater.parse("2017-12-31");
-			Date endDate = iso8601Formater.parse("2022-12-31");
+			Date endDate = iso8601Formater.parse("2025-12-31");
 
 			/**
 			 * Serijski broj sertifikata
