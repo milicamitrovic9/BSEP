@@ -43,7 +43,7 @@ import com.ftn.bsep.service.CertificateGenerator;
 import com.ftn.bsep.service.CertificateService;
 import com.ftn.bsep.service.KeyStoreReader;
 import com.ftn.bsep.service.KeyStoreWriter;
-import com.ftn.bsep.service.PDFGenerator;
+import com.ftn.bsep.service.CRTGenerator;
 import com.itextpdf.text.DocumentException;
 
 @Service
@@ -362,20 +362,20 @@ public class CertificateServiceImpl implements CertificateService {
 	}
 
 	@Override
-	public void skiniCa(String uid) throws FileNotFoundException, DocumentException {
+	public void skiniCa(String uid) throws CertificateEncodingException, IOException {
 		KeyStoreReader ksr = new KeyStoreReader();
 		X509Certificate cer = ksr.readCertificate(KEY_STORE_FOLDER + "keyStoreCA.jks", "123", "CA" + uid);
-		PDFGenerator pdfGenerator = new PDFGenerator();
-		pdfGenerator.createCertificatePDF(cer);
+		CRTGenerator crtGenerator = new CRTGenerator();
+		crtGenerator.createCertificateCRT(cer);
 
 	}
 
 	@Override
-	public void skiniEE(String uid) throws FileNotFoundException, DocumentException {
+	public void skiniEE(String uid) throws CertificateEncodingException, IOException {
 		KeyStoreReader ksr = new KeyStoreReader();
 		X509Certificate cer = ksr.readCertificate(KEY_STORE_FOLDER + "keyStoreEE.jks", "123", "EE" + uid);
-		PDFGenerator pdfGenerator = new PDFGenerator();
-		pdfGenerator.createCertificatePDF(cer);
+		CRTGenerator crtGenerator = new CRTGenerator();
+		crtGenerator.createCertificateCRT(cer);
 	}
 
 	public List<X509Certificate> readAllCACertificates(String file, String password)
