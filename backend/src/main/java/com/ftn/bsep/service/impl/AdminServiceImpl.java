@@ -1,6 +1,7 @@
 package com.ftn.bsep.service.impl;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -33,7 +34,7 @@ import com.ftn.bsep.service.AdminService;
 import com.ftn.bsep.service.CertificateGenerator;
 import com.ftn.bsep.service.KeyStoreReader;
 import com.ftn.bsep.service.KeyStoreWriter;
-import com.ftn.bsep.service.PDFGenerator;
+import com.ftn.bsep.service.CRTGenerator;
 import com.itextpdf.text.DocumentException;
 
 @Service
@@ -159,7 +160,7 @@ public class AdminServiceImpl implements AdminService {
 
 	private X509Certificate createRoot(KeyPair keyPair)
 			throws NoSuchProviderException, CertificateException, NoSuchAlgorithmException, InvalidKeyException,
-			SignatureException, FileNotFoundException, DocumentException {
+			SignatureException, IOException {
 
 		/**
 		 * Kreiranje podataka o subjektu i issueru
@@ -189,8 +190,8 @@ public class AdminServiceImpl implements AdminService {
 		cert.verify(keyPair.getPublic());
 		System.out.println("\nValidacija uspesna :)");
 
-		PDFGenerator pdfGen = new PDFGenerator();
-		pdfGen.createCertificatePDF(cert);
+		CRTGenerator crtGen = new CRTGenerator();
+		crtGen.createCertificateCRT(cert);
 
 		System.out.println("Non critical: " + cert.getNonCriticalExtensionOIDs());
 
@@ -227,7 +228,7 @@ public class AdminServiceImpl implements AdminService {
 			 */
 			SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
 			Date startDate = iso8601Formater.parse("2017-12-31");
-			Date endDate = iso8601Formater.parse("2025-12-31");
+			Date endDate = iso8601Formater.parse("2023-12-31");
 
 			/**
 			 * Serijski broj sertifikata
