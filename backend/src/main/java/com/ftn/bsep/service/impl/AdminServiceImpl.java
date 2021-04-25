@@ -1,6 +1,5 @@
 package com.ftn.bsep.service.impl;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
@@ -31,11 +30,10 @@ import com.ftn.bsep.model.SubjectData;
 import com.ftn.bsep.repository.AdminRepository;
 import com.ftn.bsep.repository.AliasCARepository;
 import com.ftn.bsep.service.AdminService;
+import com.ftn.bsep.service.CRTGenerator;
 import com.ftn.bsep.service.CertificateGenerator;
 import com.ftn.bsep.service.KeyStoreReader;
 import com.ftn.bsep.service.KeyStoreWriter;
-import com.ftn.bsep.service.CRTGenerator;
-import com.itextpdf.text.DocumentException;
 
 @Service
 public class AdminServiceImpl implements AdminService {

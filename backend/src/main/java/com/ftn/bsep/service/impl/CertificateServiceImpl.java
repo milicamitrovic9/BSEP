@@ -210,7 +210,7 @@ public class CertificateServiceImpl implements CertificateService {
 
 	}
 
-	// pretraga i iscitavanje sertifikata na osnovu aliasa
+	// pretraga i iscitavanje CA sertifikata na osnovu aliasa
 	public X509Certificate searchByAlias(String alias) {
 
 		KeyStoreReader ksr = new KeyStoreReader();
@@ -303,7 +303,10 @@ public class CertificateServiceImpl implements CertificateService {
 		List<AliasCA> aliasi = aliasCARepository.findAll();
 		List<String> imenaAliasa = new ArrayList<>();
 		for (AliasCA a : aliasi) {
-			imenaAliasa.add(a.getAlias());
+			String uid = a.getAlias().replace("CA", "");
+			// ako je validan dodaj ga u listu
+			if (validacijaCA(uid))
+				imenaAliasa.add(a.getAlias());
 		}
 		return imenaAliasa;
 	}
@@ -606,6 +609,24 @@ public class CertificateServiceImpl implements CertificateService {
 			return false;
 		}
 
+		AliasCA certCurr = aliasCARepository.findByAlias("CA" + uid);
+		String issuerAlias = certCurr.getAliasIssuer();
+		X509Certificate issuer = searchByAlias(issuerAlias);
+
+		try {
+			cert.verify(issuer.getPublicKey());
+		} catch (CertificateException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		} catch (NoSuchProviderException e) {
+			e.printStackTrace();
+		} catch (SignatureException e) {
+			e.printStackTrace();
+		}
+
 		return true;
 	}
 
@@ -632,6 +653,24 @@ public class CertificateServiceImpl implements CertificateService {
 		if (!(today.after(certNotBefore) && today.before(certNotAfter))) {
 
 			return false;
+		}
+
+		AliasEE certEE = aliasEERepository.findByAlias("EE" + uid);
+		String issuerAlias = certEE.getAliasIssuer();
+		X509Certificate issuer = searchByAlias(issuerAlias);
+
+		try {
+			cert.verify(issuer.getPublicKey());
+		} catch (CertificateException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		} catch (NoSuchProviderException e) {
+			e.printStackTrace();
+		} catch (SignatureException e) {
+			e.printStackTrace();
 		}
 
 		return true;

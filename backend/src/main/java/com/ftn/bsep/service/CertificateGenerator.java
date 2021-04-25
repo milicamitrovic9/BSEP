@@ -38,11 +38,13 @@ public class CertificateGenerator {
 		try {
 
 			/**
-			 * Klasa za generisanje ne moze da primi direktno private key zato imamo builder sa enkripcijom 
-			 * Sadrzi private key Issuer-a sertifikta i koristi se za potpisivanje sertifikata 
-			 * Parametar je algoritam koji se koristi za potpisavanje sertifikata
+			 * Klasa za generisanje ne moze da primi direktno private key zato imamo builder
+			 * sa enkripcijom Sadrzi private key Issuer-a sertifikta i koristi se za
+			 * potpisivanje sertifikata Parametar je algoritam koji se koristi za
+			 * potpisavanje sertifikata
 			 */
-			JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithRSAEncryption").setProvider(BouncyCastleProvider.PROVIDER_NAME);
+			JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithRSAEncryption")
+					.setProvider(BouncyCastleProvider.PROVIDER_NAME);
 
 			/**
 			 * Kreiramo objekat koji sadrzi private key koji sluzi za potpisavanje
@@ -60,25 +62,49 @@ public class CertificateGenerator {
 			/**
 			 * Dodavanje ekstenzije Ako je intermediate
 			 */
-			if (extension.contains("CA")) {
+			if (extension.contains("CA - Certificate Authority")) {
 				certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(true));
 				certGen.addExtension(Extension.keyUsage, true,
 						new KeyUsage(KeyUsage.nonRepudiation | KeyUsage.keyCertSign | KeyUsage.cRLSign));
-			} else {
-				certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(false));
-				/**
-				 * Potpisivanje dokumenta
-				 */
-				if (extension.contains("signing")) {
-					certGen.addExtension(Extension.keyUsage, true,
-							new KeyUsage(KeyUsage.nonRepudiation | KeyUsage.digitalSignature));
-				} else if (extension.contains("encipherment")) {
-					/**
-					 * Data and key encription
-					 */
-					certGen.addExtension(Extension.keyUsage, true, 
-							new KeyUsage(KeyUsage.keyEncipherment | KeyUsage.dataEncipherment | KeyUsage.keyAgreement | KeyUsage.nonRepudiation));
-				}
+			}
+
+			if (extension.equals("CA, Document signing")) {
+				certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(true));
+				certGen.addExtension(Extension.keyUsage, true, new KeyUsage(
+						KeyUsage.nonRepudiation | KeyUsage.keyCertSign | KeyUsage.cRLSign | KeyUsage.digitalSignature));
+			}
+			if (extension.equals("CA, Data and key encipherment")) {
+				certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(true));
+				certGen.addExtension(Extension.keyUsage, true,
+						new KeyUsage(KeyUsage.nonRepudiation | KeyUsage.keyCertSign | KeyUsage.cRLSign
+								| KeyUsage.keyEncipherment | KeyUsage.dataEncipherment | KeyUsage.keyAgreement));
+			}
+			if (extension.equals("CA, Document signing, Data and key encipherment")) {
+				certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(true));
+				certGen.addExtension(Extension.keyUsage, true,
+						new KeyUsage(KeyUsage.nonRepudiation | KeyUsage.keyCertSign | KeyUsage.cRLSign
+								| KeyUsage.keyEncipherment | KeyUsage.dataEncipherment | KeyUsage.keyAgreement
+								| KeyUsage.digitalSignature));
+			}
+
+			if (extension.equals("Document signing")) {
+				certGen.addExtension(Extension.basicConstraints, false, new BasicConstraints(true));
+				certGen.addExtension(Extension.keyUsage, true,
+						new KeyUsage(KeyUsage.nonRepudiation | KeyUsage.digitalSignature));
+			}
+
+			if (extension.equals("Data and key encipherment")) {
+				certGen.addExtension(Extension.basicConstraints, false, new BasicConstraints(true));
+				certGen.addExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.keyEncipherment
+						| KeyUsage.dataEncipherment | KeyUsage.keyAgreement | KeyUsage.nonRepudiation));
+			}
+
+			if (extension.equals("Document signing, Data and key encipherment")) {
+				certGen.addExtension(Extension.basicConstraints, false, new BasicConstraints(true));
+
+				certGen.addExtension(Extension.keyUsage, true,
+						new KeyUsage(KeyUsage.keyEncipherment | KeyUsage.dataEncipherment | KeyUsage.keyAgreement
+								| KeyUsage.nonRepudiation | KeyUsage.digitalSignature));
 			}
 
 			/**
