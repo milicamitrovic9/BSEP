@@ -13,25 +13,46 @@ export class RegisterComponent{
     
     korisnik: User;
     
-    constructor(private route:ActivatedRoute,private router:Router,private registrcijaService:RegisterServices){
-        this.korisnik=new User();
+    korisnikUserReg: boolean = false;
+
+    constructor(private route: ActivatedRoute, private router: Router, private registrcijaService: RegisterServices) {
+        this.korisnik = new User();
     }
 
     onSubmit() {
       
     
-        this.registrcijaService.save(this.korisnik).subscribe(result => this.gotoUserList());
-        alert("User: "+this.korisnik.name+""+this.korisnik.lastName+" has been registered")
-        this.korisnik.name="";
-        this.korisnik.lastName="";
-        this.korisnik.email="";
-        this.korisnik.password="";
-        this.router.navigate(["/homepage"]);
+        if (this.korisnikUserReg == false) {
 
-      }
-     
-      gotoUserList() {
-       
-      }
+            this.registrcijaService.save(this.korisnik).subscribe(result => this.gotoUserList());
+            alert("sacuvan korisnik " + this.korisnik.name + "" + this.korisnik.lastName)
+            this.korisnik.name = "";
+            this.korisnik.lastName = "";
+            this.korisnik.email = "";
+            this.korisnik.password = "";
+            this.router.navigate(["/login"]);
+        } else {
+            this.registrcijaService.saveObicnog(this.korisnik).subscribe(result => this.gotoUserList());
+            alert("Sacuvan obican korisnik " + this.korisnik.name + "" + this.korisnik.lastName)
+            this.korisnik.name = "";
+            this.korisnik.lastName = "";
+            this.korisnik.email = "";
+            this.korisnik.password = "";
+            this.router.navigate(["/login"]);
+        }
+    }
+
+    toggleUserReg(event) {
+        if (event.target.checked) {
+            this.korisnikUserReg = true;
+        } else {
+            this.korisnikUserReg = false;
+        }
+    }
+
+
+    gotoUserList() {
+
+    }
 
 }

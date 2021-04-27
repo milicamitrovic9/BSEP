@@ -35,6 +35,9 @@ export class CertificateComponent implements OnInit {
         this.loginService.whoIsLoggedIn().subscribe({
             next: korisnik => {
                 this.korisnik = korisnik;
+                if (this.korisnik == null) {
+                    this.router.navigate(["/homepage"]);
+                }
               
             }
         });
@@ -61,7 +64,7 @@ export class CertificateComponent implements OnInit {
                 next: povratna => {
                 this.povratna = povratna;
                     if (this.povratna == true)
-                        window.location.reload();
+                    this.router.navigate(['/userpage']);
                 }
             });
 

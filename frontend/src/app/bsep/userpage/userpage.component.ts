@@ -30,6 +30,13 @@ import { RegisterServices } from '../shared/service/registerService';
       this.registracijaService.whoIsLoggedIn().subscribe({
         next: korisnik => {
           this.korisnik = korisnik;
+          if (this.korisnik.rootCreated == true || this.korisnik.rootCreated == false) {
+            console.log("Instanca od ADMIN");
+            this.router.navigate(["/userpage"]);
+          } else {
+            console.log("Instanca od KORISNIK");
+            this.router.navigate(["/userpage/korisnik"]);
+        }
   
          
         }
@@ -43,7 +50,8 @@ import { RegisterServices } from '../shared/service/registerService';
     }
   
     kraj() {
-      this.router.navigate(["/homepage"]);
+   //   this.router.navigate(["/homepage"]);
+      alert("You have just logged out")
     }
   
   }

@@ -11,6 +11,7 @@ import {
 import { RegisterComponent } from './bsep/register/register.component';
 import { LoginComponent } from './bsep/login/login.component';
 import { HomePageComponent } from './bsep/homepage/homepage.component';
+
 import { RegisterServices } from './bsep/shared/service/registerService';
 import { UserPageComponent } from './bsep/userpage/userpage.component';
 import { User } from './bsep/shared/model/User';
@@ -32,7 +33,8 @@ import { UserPageModule } from './bsep/userpage/userpage.module';
       { path: 'homepage', component: HomePageComponent },
       { path: 'register', component: RegisterComponent },
       { path: 'login', component: LoginComponent },
-  //    { path: 'userpage', component: UserPageComponent },
+    //{ path: 'userpage', component: UserPageComponent },
+
     
       { path: '', redirectTo: 'homepage', pathMatch: 'full' },
       { path: '**', redirectTo: 'homepage', pathMatch: 'full'}
@@ -45,7 +47,8 @@ import { UserPageModule } from './bsep/userpage/userpage.module';
     RegisterComponent,
     LoginComponent,
     HomePageComponent,
-    //UserPageComponent
+    UserPageComponent,
+    HomePageComponent
        
   ],
 

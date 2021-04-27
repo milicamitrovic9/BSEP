@@ -8,6 +8,7 @@ import { UserPageComponent } from './userpage.component';
 import { CertificateComponent } from '../certificate/certificate.component';
 import { ListaSertifikataComponent } from '../allcertificates/allCertificates.component';
 import { CertificateService } from '../shared/service/certificateService';
+import { HomePageUserComponent } from '../home-page-user/home-page-user.component';
 
 
 
@@ -16,7 +17,8 @@ import { CertificateService } from '../shared/service/certificateService';
   declarations: [
     UserPageComponent,
     CertificateComponent,
-    ListaSertifikataComponent
+    ListaSertifikataComponent,
+    HomePageUserComponent
    
   ],
   imports: [
@@ -25,6 +27,7 @@ import { CertificateService } from '../shared/service/certificateService';
       { path: 'userpage', component: UserPageComponent },
       { path: 'userpage/certificate', component:CertificateComponent },
       { path: 'userpage/allCertificates', component:ListaSertifikataComponent },
+      { path: 'userpage/korisnik', component: HomePageUserComponent }
 
     ]),
     FormsModule, 

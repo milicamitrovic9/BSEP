@@ -1,0 +1,137 @@
+<div class='card'>
+    <div class='card-body'>
+      <h1>User Profile</h1>
+      <h3>User logged in: <u>{{ korisnik.ime }} {{ korisnik.prezime }} </u> </h3>
+      <div class="topnav"
+           style="background-color: transparent;">
+        <!-- <a [routerLink]="['./sertifikat']" style="margin-left: 5px;" class="btn btn-info">New certificate</a> -->
+        <!-- <a [routerLink]="['./listaSertifikata']" style="margin-left: 15px;" class="btn btn-info">All certificates</a> -->
+        <a href="#"
+           (click)='logout()'
+           class="btn btn-info">Logout</a>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div class='card'>
+    <div class='card-body'>
+      <h2>Certificate Authority Certificates:</h2>
+      <div class="listaCASertifikata">
+        <div class='table-responsive'>
+          <table class='table'
+                 *ngIf='listaCASertifikata'>
+            <thead>
+              <tr>
+                <th>Certificate Subject</th>
+                <th>Subject UID</th>
+                <th>Not Before</th>
+                <th>Not After</th>
+                <th></th>
+                <th></th>
+                <!-- <th></th>-->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor='let ser of listaCASertifikata'>
+                <td>{{ser.cn+"-"+ser.o+ "-" +ser.ou+ "-" +ser.c+ "-" +ser.mail}}</td>
+                <td>{{ser.uid}}</td>
+                <td>{{ ser.notBefore | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ ser.notAfter | date: 'dd/MM/yyyy' }}</td>
+                <td><button class="btn btn-info"
+                          (click)='skiniSertifikatCA(ser.uid)'>Download</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class='card'>
+    <div class='card-body'>
+      <h2>End-Entity Certificates:</h2>
+      <div class="listaEESertifikata">
+        <div class='table-responsive'>
+          <table class='table'
+                 *ngIf='listaEESertifikata'>
+            <thead>
+              <tr>
+                <th>Certificate Subject</th>
+                <th>Subject UID</th>
+                <th>Not Before</th>
+                <th>Not After</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor='let sertifikat of listaEESertifikata'>
+                <td>{{sertifikat.cn+"-"+sertifikat.o+ "-" +sertifikat.ou+ "-" +sertifikat.c+ "-" +sertifikat.mail}}</td>
+                <td>{{sertifikat.uid}}</td>
+                <td>{{ sertifikat.notBefore | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ sertifikat.notAfter | date: 'dd/MM/yyyy' }}</td>
+                <td><button class="btn btn-info"
+                          (click)='skiniSertifikatEE(sertifikat.uid)'>Download</button></td>
+  
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class='card'>
+    <div class='card-body'>
+      <h2>Revoked Certificates</h2>
+      <div class='table-responsive'>
+        <table class='table'
+               *ngIf='listaPovucenihSertifikata'>
+          <thead>
+            <tr>
+              <th>Certificate Subject</th>
+              <th>Subject UID</th>
+              <th>Not Before</th>
+              <th>Not After</th>
+              <th></th>
+              <th></th>
+  
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor='let sertifikat of listaPovucenihSertifikata'>
+              <td>{{ sertifikat.cn+"-"+sertifikat.o+ "-" +sertifikat.ou+ "-" +sertifikat.c+ "-" +sertifikat.mail }}</td>
+              <td>{{ sertifikat.uid }}</td>
+              <td>{{ sertifikat.notBefore | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ sertifikat.notAfter | date: 'dd/MM/yyyy' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class='card'>
+    <div class='card-body'>
+      <h2>Check Certificate Validity:</h2>
+      <div><select name="a"
+                #a="ngModel"
+                [(ngModel)]='izabraniAliasSvi'>
+          <option *ngFor='let alias of imenaAliasaSvi'
+                  [ngValue]="alias">{{alias}}</option>
+        </select>
+        <label style="color:limegreen;"
+               *ngIf='povratnaSvi'>Certificate valid</label>
+        <label style="color:firebrick;"
+               *ngIf='!povratnaSvi'>Certificate invalid</label>
+      </div>
+      <button class="btn btn-info"
+              (click)='validacijaSertifikatSvi(izabraniAliasSvi)'>Check</button>
+  
+    </div>
+  </div>
+  
