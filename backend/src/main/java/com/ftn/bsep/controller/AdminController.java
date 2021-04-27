@@ -1,5 +1,6 @@
 package com.ftn.bsep.controller;
 
+import com.ftn.bsep.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,7 +34,7 @@ public class AdminController {
 	}
 
 	@PostMapping(value = "/add")
-	public ResponseEntity<?> addAdmin(@RequestBody Admin adminRequest) throws Exception {
+	public ResponseEntity<?> addAdmin(@RequestBody UserDTO adminRequest) throws Exception {
 		System.out.println(adminRequest);
 		Admin exist = adminService.findByEmail(adminRequest.getEmail());
 		if (exist != null) {

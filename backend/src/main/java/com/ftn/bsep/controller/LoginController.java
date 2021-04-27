@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Context;
 
+import com.ftn.bsep.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,10 @@ import com.ftn.bsep.model.LoginRequest;
 import com.ftn.bsep.model.User;
 import com.ftn.bsep.service.AdminService;
 import com.ftn.bsep.service.UserService;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -26,7 +31,7 @@ public class LoginController {
     private UserService userService;
 
     @PostMapping(value = "/regKorisnika")
-    public ResponseEntity<?> dodajKorisnika(@RequestBody User userRequest) throws Exception {
+    public ResponseEntity<?> dodajKorisnika(@RequestBody UserDTO userRequest) throws Exception {
         Admin existAdmin = adminService.findByEmail(userRequest.getEmail());
         User existUser = userService.findByEmail(userRequest.getEmail());
 
@@ -47,7 +52,8 @@ public class LoginController {
 
 		if (admin != null) {
 
-			if (loginRequest.getPassword().equals(admin.getPassword())) {
+			if(checkIntegrity(loginRequest.getPassword(), admin.getPassword())){
+			//if (loginRequest.getPassword().equals(admin.getPassword())) {
 				HttpSession session = request.getSession();
 				session.setAttribute("admin", admin);
 				return new ResponseEntity<>(admin, HttpStatus.CREATED);
@@ -56,7 +62,8 @@ public class LoginController {
 		} else {
             User user = userService.findByEmail(loginRequest.getEmail());
             if (user != null) {
-                if (loginRequest.getPassword().equals(user.getPassword())) {
+				if(checkIntegrity(loginRequest.getPassword(), user.getPassword())){
+                //if (loginRequest.getPassword().equals(user.getPassword())) {
                     HttpSession session = request.getSession();
                     session.setAttribute("user", user);
                     return new ResponseEntity<User>(user, HttpStatus.CREATED);
@@ -89,6 +96,23 @@ public class LoginController {
 		session.invalidate();
 
 		return ResponseEntity.status(200).build();
+	}
+
+	//Metoda koja proverava da li je ostcen integritet poruke
+	private boolean checkIntegrity(String data, byte[] dataHash) {
+		byte[] newDataHash = hash(data);
+		return Arrays.equals(dataHash, newDataHash);
+	}
+	public byte[] hash(String data) {
+		//Kao hes funkcija koristi SHA-256
+		try {
+			MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+			byte[] dataHash = sha256.digest(data.getBytes());
+			return dataHash;
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

@@ -3,6 +3,7 @@ package com.ftn.bsep.service;
 import java.util.Collection;
 
 import com.ftn.bsep.model.User;
+import com.ftn.bsep.model.UserDTO;
 
 public interface UserService {
 	
@@ -12,7 +13,7 @@ public interface UserService {
 
 	User findByEmail(String email);
 
-	User create(User user) throws Exception;
+	User create(UserDTO user) throws Exception;
 
 	User update(User user) throws Exception;
 

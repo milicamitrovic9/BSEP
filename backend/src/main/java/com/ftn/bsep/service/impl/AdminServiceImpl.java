@@ -1,14 +1,7 @@
 package com.ftn.bsep.service.impl;
 
 import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
-import java.security.SecureRandom;
-import java.security.SignatureException;
+import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -18,15 +11,12 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
+import com.ftn.bsep.model.*;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ftn.bsep.model.Admin;
-import com.ftn.bsep.model.AliasCA;
-import com.ftn.bsep.model.IssuerData;
-import com.ftn.bsep.model.SubjectData;
 import com.ftn.bsep.repository.AdminRepository;
 import com.ftn.bsep.repository.AliasCARepository;
 import com.ftn.bsep.service.AdminService;
@@ -46,10 +36,35 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private AliasCARepository aliasCARepository;
 
+	public byte[] hash(String data) {
+		//Kao hes funkcija koristi SHA-256
+		try {
+			MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+			byte[] dataHash = sha256.digest(data.getBytes());
+			return dataHash;
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	//prilikom registracije admina kreiramo root sertifikat
 	@Override
-	public Admin create(Admin admin) throws Exception {
+	public Admin create(UserDTO admin) throws Exception {
+
+		String password=admin.getPassword();
+		byte[] dataHash = hash(password);
 
 		Admin adminModel = new Admin();
+
+		adminModel.setPassword(dataHash);
+		adminModel.setName(admin.getName());
+		adminModel.setLastName( admin.getLastName());
+		adminModel.setEmail(admin.getEmail());
+		adminModel.setRootCreated(true);
+
+		//adminModel.copyValues(admin);
+		adminModel = adminRepository.save(adminModel);
 
 		/**
 		 * Kreiranje novog para kljuceva za root
@@ -115,9 +130,6 @@ public class AdminServiceImpl implements AdminService {
 		KeyStoreReader ksr = new KeyStoreReader();
 		Certificate certificate = ksr.readCertificate(KEY_STORE_FOLDER + "keyStoreCA.jks", "123", "CARoot");
 		System.out.println(certificate);
-		
-		adminModel.copyValues(admin);
-		adminModel = adminRepository.save(adminModel);
 
 		return adminModel;
 	}
@@ -308,4 +320,6 @@ public class AdminServiceImpl implements AdminService {
 		Admin adminForDelete = findByEmail(email);
 		adminRepository.deleteById(adminForDelete.getId());
 	}
+
+
 }
