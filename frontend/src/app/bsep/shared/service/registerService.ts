@@ -30,10 +30,10 @@ export class RegisterServices{
     }
 
     public logout(request: Request) {
-        return this.http.put("/api/login/logout", request);
+        return this.http.put("/api/auth/logOut", request);
     }
     public saveObicnog(korisnik:User){
-        return this.http.post<User>("/api/login/regKorisnika",korisnik);
+        return this.http.post<User>("/api/auth/regKorisnika",korisnik);
     }
 
 }

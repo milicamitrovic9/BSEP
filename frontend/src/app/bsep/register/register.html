@@ -70,11 +70,11 @@
                         <td *ngIf="password?.errors?.required && password?.touched"> Requierd field</td>
                         <td *ngIf="password?.errors?.minlength && password?.touched"> Password must contain at least 8 characters</td>
                     </tr>
-                </tr>
+               
                 <input type="checkbox" class="btn btn-info" id="korisnikUser" name="korisnikUser" value="KorisnikUser" (change)="toggleUserReg($event)">
                 <label>Register simple user</label>
                          <tr>
-                            <tr>
+                            
                             <td><input class="btn waves-effect waves-light pink accent-2" type="submit" value="Register"></td>
                                 </tr>
         </table>
