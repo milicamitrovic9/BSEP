@@ -16,10 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ftn.bsep.model.Admin;
 import com.ftn.bsep.service.AdminService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.ws.rs.core.Context;
+
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
-	
+
 	@Autowired
 	private AdminService adminService;
 
@@ -42,16 +46,31 @@ public class AdminController {
 	}
 
 	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Admin> promeniPodatkeAdmina(@RequestBody Admin adminRequest) throws Exception {
+	public ResponseEntity<?> promeniPodatkeAdmina(@Context HttpServletRequest request, @RequestBody Admin admin)
+			throws Exception {
 
-		Admin adminUpdate = adminService.update(adminRequest);
-		return new ResponseEntity<>(adminUpdate, HttpStatus.OK);
+		HttpSession session = request.getSession();
+		Admin adm = (Admin) session.getAttribute("admin");
+
+		if (adm == null) {
+			return new ResponseEntity<>("Nedozvoljeno ponasanje!", HttpStatus.FORBIDDEN);
+		} else {
+			Admin a = adminService.update(admin);
+			return new ResponseEntity<Admin>(a, HttpStatus.OK);
+		}
 	}
 
 
 	@DeleteMapping(value = "/delete/{email}")
-	public ResponseEntity<Admin> deleteAdmin(@PathVariable("email") String email) {
-		adminService.deleteByEmail(email);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	public ResponseEntity<?> deleteAdmin (@Context HttpServletRequest request, @PathVariable("email") String email) {
+		HttpSession session = request.getSession();
+		Admin admin = (Admin) session.getAttribute("admin");
+
+		if (admin == null) {
+			return new ResponseEntity<>("Nedozvoljeno ponasanje!", HttpStatus.FORBIDDEN);
+		} else {
+			adminService.deleteByEmail(email);
+			return new ResponseEntity<Admin>(HttpStatus.NO_CONTENT);
+		}
 	}
 }

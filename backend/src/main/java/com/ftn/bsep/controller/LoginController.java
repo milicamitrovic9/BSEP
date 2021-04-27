@@ -7,11 +7,7 @@ import javax.ws.rs.core.Context;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ftn.bsep.model.Admin;
 import com.ftn.bsep.model.LoginRequest;
@@ -20,7 +16,7 @@ import com.ftn.bsep.service.AdminService;
 import com.ftn.bsep.service.UserService;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/login")
 public class LoginController {
 
 	@Autowired
@@ -35,7 +31,8 @@ public class LoginController {
         User existUser = userService.findByEmail(userRequest.getEmail());
 
         if (existAdmin != null || existUser != null) {
-            return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+			return new ResponseEntity<>("Email vec postoji u bazi! Pokusajte drugi email.",
+					HttpStatus.METHOD_NOT_ALLOWED);
         }
 
         User user = userService.create(userRequest);
@@ -84,7 +81,7 @@ public class LoginController {
 		}
 	}
 
-	@PostMapping(value = "/logout")
+	@PutMapping(value = "/logOut")
 	public ResponseEntity<?> logOut(@Context HttpServletRequest request) {
 		HttpSession session = request.getSession();
         System.out.println("...LOGOUT USER... " + session.getAttribute("user"));
