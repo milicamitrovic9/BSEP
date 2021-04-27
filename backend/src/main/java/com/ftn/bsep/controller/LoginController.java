@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ftn.bsep.model.Admin;
 import com.ftn.bsep.model.LoginRequest;
+import com.ftn.bsep.model.User;
 import com.ftn.bsep.service.AdminService;
+import com.ftn.bsep.service.UserService;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -24,9 +26,26 @@ public class LoginController {
 	@Autowired
 	private AdminService adminService;
 
+    @Autowired
+    private UserService userService;
+
+    @PostMapping(value = "/regKorisnika")
+    public ResponseEntity<?> dodajKorisnika(@RequestBody User userRequest) throws Exception {
+        Admin existAdmin = adminService.findByEmail(userRequest.getEmail());
+        User existUser = userService.findByEmail(userRequest.getEmail());
+
+        if (existAdmin != null || existUser != null) {
+            return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+        }
+
+        User user = userService.create(userRequest);
+
+        return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    }
+    
 	@PostMapping(value = "/login")
 	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, @Context HttpServletRequest request) {
-
+		
 		Admin admin = adminService.findByEmail(loginRequest.getEmail());
 
 		if (admin != null) {
@@ -38,7 +57,14 @@ public class LoginController {
 			}
 
 		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            User user = userService.findByEmail(loginRequest.getEmail());
+            if (user != null) {
+                if (loginRequest.getPassword().equals(user.getPassword())) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("user", user);
+                    return new ResponseEntity<User>(user, HttpStatus.CREATED);
+                }
+            }
 		}
 
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -54,13 +80,15 @@ public class LoginController {
 		if (admin != null) {
 			return admin;
 		} else {
-			return null;
+			return (User) session.getAttribute("user");
 		}
 	}
 
 	@PostMapping(value = "/logout")
 	public ResponseEntity<?> logOut(@Context HttpServletRequest request) {
 		HttpSession session = request.getSession();
+        System.out.println("...LOGOUT USER... " + session.getAttribute("user"));
+        System.out.println("...LOGOUT ADMIN... " + session.getAttribute("admin"));
 		session.invalidate();
 
 		return ResponseEntity.status(200).build();
