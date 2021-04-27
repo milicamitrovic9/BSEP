@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+
 import { User } from "../model/User";
 import { Login } from "../model/Login";
+import { Observable } from "rxjs";
 
 
 
@@ -29,8 +30,10 @@ export class RegisterServices{
     }
 
     public logout(request: Request) {
-        return this.http.post("/api/auth/logout", request);
+        return this.http.put("/api/login/logout", request);
     }
-
+    public saveObicnog(korisnik:User){
+        return this.http.post<User>("/api/login/regKorisnika",korisnik);
+    }
 
 }

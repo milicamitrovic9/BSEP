@@ -40,7 +40,13 @@ export class LoginComponent implements OnInit{
      this.loginService.whoIsLoggedIn().subscribe({next: korisnik=>{
           this.user=korisnik;
           alert("User "+korisnik.name + " logged in successfully.");
-          this.router.navigate(["/userpage"]);
+          if (this.user.rootCreated == true || this.user.rootCreated == false) {
+            console.log("Instanca od ADMIN");
+            this.router.navigate(["/userpage"]);
+          } else {
+            console.log("Instanca od KORISNIK");
+            this.router.navigate(["/userpage/korisnik"]);
+        }
           
      }
      });
