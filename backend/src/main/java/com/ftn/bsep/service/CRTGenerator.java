@@ -16,7 +16,7 @@ public class CRTGenerator {
 		String certName = cert.getSubjectDN().getName();
         byte[] buf = cert.getEncoded();
 
-        FileOutputStream os = new FileOutputStream("dataCERT/" + certName + ".crt");
+        FileOutputStream os = new FileOutputStream("certificates/" + certName + ".crt");
         os.write(buf);
         os.close();
 	}

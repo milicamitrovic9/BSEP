@@ -1,7 +1,6 @@
 package com.ftn.bsep.service.impl;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
@@ -19,6 +18,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -35,16 +35,14 @@ import com.ftn.bsep.model.CertificateDAO;
 import com.ftn.bsep.model.InvalidateAlias;
 import com.ftn.bsep.model.IssuerData;
 import com.ftn.bsep.model.SubjectData;
-import com.ftn.bsep.repository.AdminRepository;
 import com.ftn.bsep.repository.AliasCARepository;
 import com.ftn.bsep.repository.AliasEERepository;
 import com.ftn.bsep.repository.InvalidateRepository;
+import com.ftn.bsep.service.CRTGenerator;
 import com.ftn.bsep.service.CertificateGenerator;
 import com.ftn.bsep.service.CertificateService;
 import com.ftn.bsep.service.KeyStoreReader;
 import com.ftn.bsep.service.KeyStoreWriter;
-import com.ftn.bsep.service.CRTGenerator;
-import com.itextpdf.text.DocumentException;
 
 @Service
 public class CertificateServiceImpl implements CertificateService {
@@ -52,9 +50,6 @@ public class CertificateServiceImpl implements CertificateService {
 	private static final String KEY_STORE_FOLDER = "keyStore/";
 
 	private KeyStore keyStore;
-
-	@Autowired
-	private AdminRepository adminRepository;
 
 	@Autowired
 	private AliasCARepository aliasCARepository;
@@ -501,9 +496,13 @@ public class CertificateServiceImpl implements CertificateService {
 
 	@Override
 	public ArrayList<CertificateDAO> vratiSvePovucene() throws NoSuchProviderException, KeyStoreException {
-		System.out.println("udjoh");
-		ArrayList<CertificateDAO> allCertificates = new ArrayList<CertificateDAO>();
 
+		ArrayList<CertificateDAO> allCertificates = new ArrayList<>();
+		
+		if(allCertificates.isEmpty()) {
+			return null;
+		}
+		
 		readAllPovuceneCACertificates(KEY_STORE_FOLDER + "keyStoreCA.jks", "123").forEach(certif -> {
 			try {
 				allCertificates.add(new CertificateDAO(certif));
