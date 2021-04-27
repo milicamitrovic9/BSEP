@@ -16,7 +16,7 @@ import com.ftn.bsep.service.AdminService;
 import com.ftn.bsep.service.UserService;
 
 @RestController
-@RequestMapping("/api/login")
+@RequestMapping("/api/auth")
 public class LoginController {
 
 	@Autowired
