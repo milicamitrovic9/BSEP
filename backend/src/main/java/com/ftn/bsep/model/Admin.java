@@ -31,12 +31,12 @@ public class Admin implements Serializable {
 	private String email;
 
 	@Column(name = "Password", nullable = false)
-	private String password;
+	private byte[] password;
 
 	@Column(name = "RootCreated", nullable = false)
 	private boolean rootCreated = false;
 
-	public Admin(String name, String lastName, String email, String password) {
+	public Admin(String name, String lastName, String email, byte[] password) {
 		this.name = name;
 		this.lastName = lastName;
 		this.email = email;
@@ -76,11 +76,11 @@ public class Admin implements Serializable {
 		this.email = email;
 	}
 
-	public String getPassword() {
+	public byte[] getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(byte[] password) {
 		this.password = password;
 	}
 

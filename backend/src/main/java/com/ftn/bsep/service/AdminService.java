@@ -2,6 +2,7 @@ package com.ftn.bsep.service;
 
 import java.util.Collection;
 import com.ftn.bsep.model.Admin;
+import com.ftn.bsep.model.UserDTO;
 
 public interface AdminService {
 	
@@ -10,7 +11,7 @@ public interface AdminService {
 
     Admin findByEmail(String email);
 
-    Admin create(Admin admin) throws Exception;
+    Admin create(UserDTO admin) throws Exception;
 
     Admin update(Admin admin) throws Exception;
 
