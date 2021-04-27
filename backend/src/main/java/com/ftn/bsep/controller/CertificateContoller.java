@@ -221,4 +221,10 @@ public class CertificateContoller {
 		return new ResponseEntity<>(ret, HttpStatus.OK);
 	}
 
+	@RequestMapping(method = GET, value = "/validacijaSvi/{izabraniAliasSvi}")
+	public ResponseEntity<?> validacijaSvi(@PathVariable("izabraniAliasSvi") String izabraniAliasSvi) throws Exception {
+		boolean ret = certificateService.validacijaSvi(izabraniAliasSvi);
+		return new ResponseEntity<>(ret, HttpStatus.OK);
+	}
+
 }
