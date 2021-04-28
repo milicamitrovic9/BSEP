@@ -1,9 +1,11 @@
 package com.ftn.bsep.model;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 @Entity
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
