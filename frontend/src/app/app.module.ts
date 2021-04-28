@@ -47,7 +47,7 @@ import { UserPageModule } from './bsep/userpage/userpage.module';
     RegisterComponent,
     LoginComponent,
     HomePageComponent,
-    UserPageComponent,
+    //UserPageComponent,
     HomePageComponent
        
   ],
