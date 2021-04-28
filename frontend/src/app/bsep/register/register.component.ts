@@ -25,7 +25,7 @@ export class RegisterComponent{
         if (this.korisnikUserReg == false) {
 
             this.registrcijaService.save(this.korisnik).subscribe(result => this.gotoUserList());
-            alert("sacuvan korisnik " + this.korisnik.name + "" + this.korisnik.lastName)
+            alert("Saved " + this.korisnik.name + "" + this.korisnik.lastName)
             this.korisnik.name = "";
             this.korisnik.lastName = "";
             this.korisnik.email = "";
@@ -33,7 +33,7 @@ export class RegisterComponent{
             this.router.navigate(["/login"]);
         } else {
             this.registrcijaService.saveObicnog(this.korisnik).subscribe(result => this.gotoUserList());
-            alert("Sacuvan obican korisnik " + this.korisnik.name + "" + this.korisnik.lastName)
+            alert("Saved " + this.korisnik.name + "" + this.korisnik.lastName)
             this.korisnik.name = "";
             this.korisnik.lastName = "";
             this.korisnik.email = "";

@@ -122,6 +122,6 @@ export class HomePageUserComponent implements OnInit {
 
     kraj() {
         //this.router.navigate(["/welcome"]);
-        alert("izlogovan")
+        alert("You have just logged out")
     }
 }
