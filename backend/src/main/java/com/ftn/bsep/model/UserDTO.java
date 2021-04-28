@@ -14,7 +14,7 @@ public class UserDTO {
         return name;
     }
 
-    public void setName(String ime) {
+    public void setName(String name) {
         this.name = name;
     }
 
