@@ -1,0 +1,2 @@
+Run OWASP VUlnerability Check:
+	- mvn clean install -Powasp-dependency-check
