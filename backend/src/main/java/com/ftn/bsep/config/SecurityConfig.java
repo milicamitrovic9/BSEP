@@ -38,13 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	}
 	
-	//TODO
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		
-		auth.userDetailsService(userDetailsService);
-	}
-
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
