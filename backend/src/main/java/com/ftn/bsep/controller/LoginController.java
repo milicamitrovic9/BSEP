@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.ws.rs.core.Context;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +41,8 @@ public class LoginController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+    private static Logger logger = LoggerFactory.getLogger(LoginController.class);
+
 	@PostMapping(value = "/regKorisnika")
 	public ResponseEntity<?> dodajKorisnika(@Valid @RequestBody UserDTO userRequest) throws Exception {
 
@@ -51,6 +55,8 @@ public class LoginController {
 		}
 
 		User user = userService.create(userRequest);
+		
+		logger.info("User registrated");
 
 		return new ResponseEntity<>(user, HttpStatus.CREATED);
 	}
@@ -67,6 +73,9 @@ public class LoginController {
 			if (isPasswordMatch) {
 				HttpSession session = request.getSession();
 				session.setAttribute("admin", admin);
+
+				logger.info("Admin logged in");
+
 				return new ResponseEntity<>(admin, HttpStatus.CREATED);
 			}
 
@@ -79,6 +88,9 @@ public class LoginController {
 				if (isPasswordMatch) {
 					HttpSession session = request.getSession();
 					session.setAttribute("user", user);
+					
+					logger.info("User logged in");
+
 					return new ResponseEntity<User>(user, HttpStatus.CREATED);
 				}
 			}

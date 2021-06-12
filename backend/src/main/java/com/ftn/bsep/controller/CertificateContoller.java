@@ -33,8 +33,7 @@ public class CertificateContoller {
 
 		System.out.println("pre ulaska: " + certificate.toString());
 		boolean povratna = certificateService.createCA(certificate);
-		// TODO: uid ako moze validacija da budu brojevi (a jedinstvenost po bazi?)
-
+		
 		return new ResponseEntity<>(povratna, HttpStatus.CREATED);
 	}
 

@@ -1,6 +1,12 @@
 package com.ftn.bsep.controller;
 
-import com.ftn.bsep.model.UserDTO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import javax.ws.rs.core.Context;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,11 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ftn.bsep.model.Admin;
+import com.ftn.bsep.model.UserDTO;
 import com.ftn.bsep.service.AdminService;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.ws.rs.core.Context;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -27,6 +30,7 @@ public class AdminController {
 
 	@Autowired
 	private AdminService adminService;
+    private static Logger logger = LoggerFactory.getLogger(AdminController.class);
 
 	@GetMapping(value = "/user/{userId}")
 	public Admin loadById(@PathVariable Long userId) {
@@ -34,7 +38,7 @@ public class AdminController {
 	}
 
 	@PostMapping(value = "/add")
-	public ResponseEntity<?> addAdmin(@RequestBody UserDTO adminRequest) throws Exception {
+	public ResponseEntity<?> addAdmin(@Valid @RequestBody UserDTO adminRequest) throws Exception {
 
 		Admin exist = adminService.findByEmail(adminRequest.getEmail());
 		if (exist != null) {
@@ -42,7 +46,7 @@ public class AdminController {
 		}
 
 		Admin admin = adminService.create(adminRequest);
-
+		logger.info("Admin user created");
 		return new ResponseEntity<>(admin, HttpStatus.CREATED);
 	}
 
@@ -57,6 +61,7 @@ public class AdminController {
 			return new ResponseEntity<>("Nedozvoljeno ponasanje!", HttpStatus.FORBIDDEN);
 		} else {
 			Admin a = adminService.update(admin);
+			logger.info("Admin user updated");
 			return new ResponseEntity<Admin>(a, HttpStatus.OK);
 		}
 	}
@@ -71,6 +76,7 @@ public class AdminController {
 			return new ResponseEntity<>("Nedozvoljeno ponasanje!", HttpStatus.FORBIDDEN);
 		} else {
 			adminService.deleteByEmail(email);
+			logger.info("Admin user deleted");
 			return new ResponseEntity<Admin>(HttpStatus.NO_CONTENT);
 		}
 	}
