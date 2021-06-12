@@ -10,6 +10,7 @@ import com.ftn.bsep.model.User;
 import com.ftn.bsep.model.UserDTO;
 import com.ftn.bsep.repository.UserRepository;
 import com.ftn.bsep.service.UserService;
+import com.ftn.bsep.util.Validator;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -38,6 +39,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User create(UserDTO userDTO) throws Exception {
 		
+		Validator.validateInputs(userDTO.getName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPassword());
+
 		User user = new User();
 		String password = passwordEncoder.encode(userDTO.getPassword());
 		

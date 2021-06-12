@@ -10,34 +10,33 @@ import java.util.Set;
 
 public class Certificate extends X509Certificate implements Serializable {
 
-	//TODO Dodati atribute za nas sertifikat
+	// TODO Dodati atribute za nas sertifikat
 
-	private  int version=3;
-	private String signatureAlgorithm="md5WithRSAEncryption";
+	private int version = 3;
+	private String signatureAlgorithm = "md5WithRSAEncryption";
 	private int serialNumber;
 	private int subjectId;
 	private String issuer;
 	private boolean validity;
-	private  Date notBefore;
+	private Date notBefore;
 	private Date notAfter;
-	private  String subject;
+	private String subject;
 	private PrivateKey subjectPrivateKeyInfo;
-	private PublicKey  subjectPublicKeyInfo;
-	private ArrayList<Certificate> issuedCertificates=new ArrayList<>();
+	private PublicKey subjectPublicKeyInfo;
+	private ArrayList<Certificate> issuedCertificates = new ArrayList<>();
 	private Certificate CA;
-	private ArrayList<Certificate>path=new ArrayList<>();
-	private  boolean isRoot=false;
+	private ArrayList<Certificate> path = new ArrayList<>();
+	private boolean isRoot = false;
 	private Extension extension;
 	private String extensionString;
 
-
 	public Certificate() {
 		this.version = 3;
-		this.signatureAlgorithm="md5WithRSAEncryption";
+		this.signatureAlgorithm = "md5WithRSAEncryption";
 		KeyPair kp = generateKeys();
-		this.subjectPrivateKeyInfo=kp.getPrivate();
-		this.subjectPublicKeyInfo=kp.getPublic();
-		this.validity=true;
+		this.subjectPrivateKeyInfo = kp.getPrivate();
+		this.subjectPublicKeyInfo = kp.getPublic();
+		this.validity = true;
 	}
 
 	public void setVersion(int version) {
@@ -162,19 +161,21 @@ public class Certificate extends X509Certificate implements Serializable {
 
 	private KeyPair generateKeys() {
 		try {
-			//Generator para kljuceva
+			// Generator para kljuceva
 			KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
 
-			//Za kreiranje kljuceva neophodno je definisati generator pseudoslucajnih brojeva
-			//Generator mora biti bezbedan - da nije jednostavno predvideti koje brojeve ce RNG generisati
-			//Koristimo generator zasnovan na SHA1 algoritmu, gde je SUN provajder
+			// Za kreiranje kljuceva neophodno je definisati generator pseudoslucajnih
+			// brojeva
+			// Generator mora biti bezbedan - da nije jednostavno predvideti koje brojeve ce
+			// RNG generisati
+			// Koristimo generator zasnovan na SHA1 algoritmu, gde je SUN provajder
 
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
 
-			//inicijalizacija generatora, 2048-bitni kljuc
+			// inicijalizacija generatora, 2048-bitni kljuc
 			keyGen.initialize(2048, random);
 
-			//generise par kljuceva koji se sastoji od javnog i privatnog kljuca
+			// generise par kljuceva koji se sastoji od javnog i privatnog kljuca
 			return keyGen.generateKeyPair();
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
@@ -183,7 +184,6 @@ public class Certificate extends X509Certificate implements Serializable {
 		}
 		return null;
 	}
-
 
 	@Override
 	public Set<String> getCriticalExtensionOIDs() {
