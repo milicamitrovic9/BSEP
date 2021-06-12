@@ -1,7 +1,14 @@
 package com.ftn.bsep.service.impl;
 
 import java.io.IOException;
-import java.security.*;
+import java.security.InvalidKeyException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.SecureRandom;
+import java.security.SignatureException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -11,12 +18,17 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
-import com.ftn.bsep.model.*;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ftn.bsep.model.Admin;
+import com.ftn.bsep.model.AliasCA;
+import com.ftn.bsep.model.IssuerData;
+import com.ftn.bsep.model.SubjectData;
+import com.ftn.bsep.model.UserDTO;
 import com.ftn.bsep.repository.AdminRepository;
 import com.ftn.bsep.repository.AliasCARepository;
 import com.ftn.bsep.service.AdminService;
@@ -24,6 +36,7 @@ import com.ftn.bsep.service.CRTGenerator;
 import com.ftn.bsep.service.CertificateGenerator;
 import com.ftn.bsep.service.KeyStoreReader;
 import com.ftn.bsep.service.KeyStoreWriter;
+import com.ftn.bsep.util.Validator;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -36,34 +49,23 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private AliasCARepository aliasCARepository;
 
-	public byte[] hash(String data) {
-		//Kao hes funkcija koristi SHA-256
-		try {
-			MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
-			byte[] dataHash = sha256.digest(data.getBytes());
-			return dataHash;
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	//prilikom registracije admina kreiramo root sertifikat
 	@Override
-	public Admin create(UserDTO admin) throws Exception {
+	public Admin create(UserDTO userDTO) throws Exception {
 
-		String password=admin.getPassword();
-		byte[] dataHash = hash(password);
+		Validator.validateInputs(userDTO.getName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPassword());
 
 		Admin adminModel = new Admin();
-
-		adminModel.setPassword(dataHash);
-		adminModel.setName(admin.getName());
-		adminModel.setLastName( admin.getLastName());
-		adminModel.setEmail(admin.getEmail());
+		String password = passwordEncoder.encode(userDTO.getPassword());
+		adminModel.setPassword(password);
+		adminModel.setName(userDTO.getName());
+		adminModel.setLastName( userDTO.getLastName());
+		adminModel.setEmail(userDTO.getEmail());
 		adminModel.setRootCreated(true);
 
-		//adminModel.copyValues(admin);
 		adminModel = adminRepository.save(adminModel);
 
 		/**

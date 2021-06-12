@@ -35,7 +35,7 @@ public class AdminController {
 
 	@PostMapping(value = "/add")
 	public ResponseEntity<?> addAdmin(@RequestBody UserDTO adminRequest) throws Exception {
-		System.out.println(adminRequest);
+
 		Admin exist = adminService.findByEmail(adminRequest.getEmail());
 		if (exist != null) {
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);

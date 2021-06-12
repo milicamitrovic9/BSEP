@@ -1,72 +1,62 @@
 package com.ftn.bsep.service.impl;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 
-import com.ftn.bsep.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ftn.bsep.model.User;
+import com.ftn.bsep.model.UserDTO;
 import com.ftn.bsep.repository.UserRepository;
 import com.ftn.bsep.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
-    
-    @Override
-    public Collection<User> findAll() {
-        return userRepository.findAll();
-    }
+	@Autowired
+	private UserRepository userRepository;
 
-    @Override
-    public User findById(Long id) {
-        return userRepository.findById(id).orElseGet(null);
-    }
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Override
+	public Collection<User> findAll() {
+		return userRepository.findAll();
+	}
 
-    @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
+	@Override
+	public User findById(Long id) {
+		return userRepository.findById(id).orElseGet(null);
+	}
 
-    @Override
-    public User create(UserDTO user) throws Exception {
-        String password=user.getPassword();
-        byte[] dataHash = hash(password);
-        User ret = new User();
-        ret.setPassword(dataHash);
-        ret.setName(user.getName());
-        ret.setLastName( user.getLastName());
-        ret.setEmail(user.getEmail());
-        //ret.copyValues(korisnik);
-        ret = userRepository.save(ret);
+	@Override
+	public User findByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
+	
+	@Override
+	public User create(UserDTO userDTO) throws Exception {
+		
+		User user = new User();
+		String password = passwordEncoder.encode(userDTO.getPassword());
+		
+		user.setPassword(password);
+		user.setName(userDTO.getName());
+		user.setLastName(userDTO.getLastName());
+		user.setEmail(userDTO.getEmail());
+		user = userRepository.save(user);
 
-        return ret;
-    }
+		return user;
+	}
 
-    public byte[] hash(String data) {
-        //Kao hes funkcija koristi SHA-256
-        try {
-            MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
-            byte[] dataHash = sha256.digest(data.getBytes());
-            return dataHash;
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+	@Override
+	public User update(User user) throws Exception {
+		return null;
+	}
 
-    @Override
-    public User update(User user) throws Exception {
-        return null;
-    }
+	@Override
+	public void delete(Long id) {
 
-    @Override
-    public void delete(Long id) {
-
-    }
+	}
 }
