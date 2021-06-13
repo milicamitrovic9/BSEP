@@ -79,7 +79,7 @@ public class LoginController {
 		} else {
 			User user = userService.findByEmail(loginRequest.getEmail());
 
-			boolean isPasswordMatch = passwordEncoder.matches(loginRequest.getPassword(), admin.getPassword());
+			boolean isPasswordMatch = passwordEncoder.matches(loginRequest.getPassword(), user.getPassword());
 
 			if (user != null) {
 				if (isPasswordMatch) {
