@@ -3,6 +3,9 @@ package com.ftn.bsep.controller;
 import com.ftn.bsep.model.Admin;
 import com.ftn.bsep.model.User;
 import com.ftn.bsep.service.CertificateService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,13 +30,15 @@ public class CertificateContoller {
 	@Autowired
 	private CertificateService certificateService;
 
+	private static Logger logger = LoggerFactory.getLogger(CertificateContoller.class);
+
 	@RequestMapping(method = POST, value = "/create")
 	public ResponseEntity<?> napraviSertifikat(@Context HttpServletRequest request, @RequestBody CertificateDAO certificate)
 			throws Exception {
 
 		System.out.println("pre ulaska: " + certificate.toString());
 		boolean povratna = certificateService.createCA(certificate);
-		
+		logger.info("Sertifikat je napravljen");
 		return new ResponseEntity<>(povratna, HttpStatus.CREATED);
 	}
 
@@ -41,9 +46,8 @@ public class CertificateContoller {
 	public ResponseEntity<?> napraviRootSertifikat(@Context HttpServletRequest request, @RequestBody CertificateDAO certificate)
 			throws Exception {
 
-		System.out.println(certificate.toString());
 		Certificate certificate1 = certificateService.createRoot(certificate);
-
+		logger.info("Root sertifikat je napravljen");
 		return new ResponseEntity<Certificate>(certificate1, HttpStatus.CREATED);
 	}
 
@@ -171,6 +175,7 @@ public class CertificateContoller {
 		Admin admin = (Admin) session.getAttribute("admin");
 		if (admin != null) {
 			certificateService.povuciCertificateCA(uid);
+			logger.info("SertifikatCA je povucen");
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>("Nedozvoljeno ponasanje!", HttpStatus.FORBIDDEN);
@@ -184,6 +189,7 @@ public class CertificateContoller {
 		Admin admin = (Admin) session.getAttribute("admin");
 		if (admin != null) {
 			certificateService.povuciCertificateEE(uid);
+			logger.info("SertifikatEE je povucen");
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>("Nedozvoljeno ponasanje!", HttpStatus.FORBIDDEN);
@@ -202,6 +208,7 @@ public class CertificateContoller {
 		} else {
 			ArrayList<CertificateDAO> sertifikati = new ArrayList<>();
 			sertifikati = certificateService.vratiSvePovucene();
+
 			return new ResponseEntity<>(sertifikati, HttpStatus.CREATED);
 		}
 	}

@@ -18,13 +18,14 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,6 +65,8 @@ public class CertificateServiceImpl implements CertificateService {
 	public Collection<Certificate> findAll() {
 		return null;
 	}
+
+    private static Logger logger = LoggerFactory.getLogger(CertificateServiceImpl.class);
 
 	// kreiranje sertifikata
 	@Override
@@ -269,9 +272,9 @@ public class CertificateServiceImpl implements CertificateService {
 			keyGen.initialize(2048, random);
 			return keyGen.generateKeyPair();
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		} catch (NoSuchProviderException e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		}
 		return null;
 	}
@@ -336,7 +339,7 @@ public class CertificateServiceImpl implements CertificateService {
 			try {
 				allCertificates.add(new CertificateDAO(certif));
 			} catch (CertificateEncodingException e) {
-				e.printStackTrace();
+				logger.error(e.toString());
 			}
 		});
 		return allCertificates;
@@ -352,7 +355,7 @@ public class CertificateServiceImpl implements CertificateService {
 			try {
 				allCertificates.add(new CertificateDAO(certif));
 			} catch (CertificateEncodingException e) {
-				e.printStackTrace();
+				logger.error(e.toString());
 			}
 		});
 		return allCertificates;
@@ -400,7 +403,7 @@ public class CertificateServiceImpl implements CertificateService {
 
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		}
 		/*
 		 * certificates.forEach(c-> { System.out.println(c.getSerialNumber()); });
@@ -432,7 +435,7 @@ public class CertificateServiceImpl implements CertificateService {
 
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		}
 		/*
 		 * certificates.forEach(c-> { System.out.println(c.getSerialNumber()); });
@@ -503,7 +506,7 @@ public class CertificateServiceImpl implements CertificateService {
 			try {
 				allCertificates.add(new CertificateDAO(certif));
 			} catch (CertificateEncodingException e) {
-				e.printStackTrace();
+				logger.error(e.toString());
 			}
 		});
 
@@ -511,7 +514,7 @@ public class CertificateServiceImpl implements CertificateService {
 			try {
 				allCertificates.add(new CertificateDAO(certif));
 			} catch (CertificateEncodingException e) {
-				e.printStackTrace();
+				logger.error(e.toString());
 			}
 		});
 		return allCertificates;
@@ -540,7 +543,7 @@ public class CertificateServiceImpl implements CertificateService {
 				certificates.add(ksr.readCertificate(file, "123", ime));
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		}
 		/*
 		 * certificates.forEach(c-> { System.out.println(c.getSerialNumber()); });
@@ -572,7 +575,7 @@ public class CertificateServiceImpl implements CertificateService {
 				certificates.add(ksr.readCertificate(file, "123", ime));
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		}
 		/*
 		 * certificates.forEach(c-> { System.out.println(c.getSerialNumber()); });
@@ -611,15 +614,15 @@ public class CertificateServiceImpl implements CertificateService {
 		try {
 			cert.verify(issuer.getPublicKey());
 		} catch (CertificateException e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		} catch (InvalidKeyException e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		} catch (NoSuchProviderException e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		} catch (SignatureException e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		}
 
 		return true;
@@ -657,15 +660,15 @@ public class CertificateServiceImpl implements CertificateService {
 		try {
 			cert.verify(issuer.getPublicKey());
 		} catch (CertificateException e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		} catch (InvalidKeyException e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		} catch (NoSuchProviderException e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		} catch (SignatureException e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		}
 
 		return true;

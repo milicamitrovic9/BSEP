@@ -20,6 +20,8 @@ import java.util.UUID;
 
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -51,6 +53,8 @@ public class AdminServiceImpl implements AdminService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	private static Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
 
 	//prilikom registracije admina kreiramo root sertifikat
 	@Override
@@ -272,7 +276,7 @@ public class AdminServiceImpl implements AdminService {
 			 */
 			return new SubjectData(keyPairSubject.getPublic(), builder.build(), sn, startDate, endDate);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		}
 		return null;
 	}
@@ -284,7 +288,7 @@ public class AdminServiceImpl implements AdminService {
 			keyGen.initialize(2048, random);
 			return keyGen.generateKeyPair();
 		} catch (NoSuchAlgorithmException | NoSuchProviderException e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		}
 		return null;
 	}

@@ -1,8 +1,5 @@
 package com.ftn.bsep.controller;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -96,7 +93,7 @@ public class LoginController {
 			}
 		}
 
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>("Korisnik nije pronadjen", HttpStatus.NOT_FOUND);
 	}
 
 	@GetMapping(value = "/loggedUser")
