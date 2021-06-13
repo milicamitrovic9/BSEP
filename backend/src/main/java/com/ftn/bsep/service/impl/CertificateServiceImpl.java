@@ -499,10 +499,6 @@ public class CertificateServiceImpl implements CertificateService {
 
 		ArrayList<CertificateDAO> allCertificates = new ArrayList<>();
 		
-		if(allCertificates.isEmpty()) {
-			return null;
-		}
-		
 		readAllPovuceneCACertificates(KEY_STORE_FOLDER + "keyStoreCA.jks", "123").forEach(certif -> {
 			try {
 				allCertificates.add(new CertificateDAO(certif));
